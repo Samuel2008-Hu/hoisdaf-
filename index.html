@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="城市一夜停摆，你是最后一个醒着的人。在 40 个真实处境里做选择，看你在故事里怎么做，而不是你怎么说自己。">
+<!-- 微信分享缩略图：把 share_cover.png（建议 300×300，png/jpg 均可）放在本文件同级目录即可生效；缺失时静默降级，不影响主流程 -->
+<meta property="og:title" content="城市停摆的那个晚上，你是最后一个醒着的人">
+<meta property="og:description" content="城市一夜停摆，你是最后一个醒着的人。在 40 个真实处境里做选择，看你在故事里怎么做，而不是你怎么说自己。">
+<meta property="og:image" content="share_cover.png">
+<link rel="apple-touch-icon" href="share_cover.png">
+<title>城市停摆的那个晚上，你是最后一个醒着的人</title>
+<style>
+  :root{
+    --bg:#0e1116; --card:#171c26; --card2:#1e2531; --line:#2a323f;
+    --txt:#e8ecf2; --sub:#9aa4b2; --accent:#6ea8ff; --accent2:#ff8fb1;
+    --ok:#57d9a3; --gold:#ffd27a; --radius:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:radial-gradient(120% 80% at 50% 0%,#1a2230 0%,var(--bg) 60%);
+    color:var(--txt); line-height:1.6; min-height:calc(var(--vh, 1vh) * 100);
+    display:flex; justify-content:center; padding:16px;
+  }
+  #app{width:100%; max-width:460px;}
+  /* 微信适配：允许用户在微信里调大字体后不破版（弹性/流式） */
+  .opt, .btn, .mini-btn, .adm-hd, .quote, .rarity-note, .foot, .sub, p, li { font-size: inherit; }
+  h1{font-size:clamp(20px,5.6vw,26px);} h2{font-size:clamp(17px,4.6vw,21px);}
+  .opt{padding:clamp(10px,3vw,14px) clamp(12px,3.4vw,16px);}
+  #posterImg{width:100%;max-width:360px;height:auto;display:block;margin:10px auto;border-radius:12px;}
+  img.paycode{max-width:100%;height:auto;pointer-events:auto;-webkit-touch-callout:default;}
+  #shareCover{display:block;max-width:100%;height:auto;margin:0 auto 10px;border-radius:10px;}
+  .card{
+    background:linear-gradient(180deg,var(--card) 0%,var(--card2) 100%);
+    border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 20px; box-shadow:0 12px 40px rgba(0,0,0,.35);
+    animation:fade .4s ease;
+  }
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  h1{font-size:24px; margin:0 0 6px; letter-spacing:.5px;}
+  h2{font-size:16px; margin:0 0 14px;}
+  .sub{color:var(--sub); font-size:14px; margin:0 0 18px;}
+  .tag{display:inline-block; font-size:12px; color:var(--accent);
+    border:1px solid var(--line); border-radius:999px; padding:3px 10px; margin-bottom:14px;}
+  .btn{
+    display:block; width:100%; border:none; cursor:pointer;
+    padding:14px 16px; border-radius:14px; font-size:15px; font-weight:600;
+    background:linear-gradient(90deg,var(--accent),#8f7bff); color:#0e1116;
+    transition:transform .12s ease, filter .12s; text-align:center;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn.ghost{background:transparent; border:1px solid var(--line); color:var(--txt); font-weight:500; margin-top:10px;}
+  .btn.share{background:linear-gradient(90deg,var(--gold),var(--accent2)); color:#201410;}
+  .progress{height:6px; background:var(--line); border-radius:999px; overflow:hidden; margin-bottom:16px;}
+  .progress > i{display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0; transition:width .3s ease;}
+  .qnum{color:var(--sub); font-size:13px; margin-bottom:8px;}
+  .scene{font-size:17px; margin:2px 0 18px; font-weight:600;}
+  .opt{
+    display:block; width:100%; text-align:left; cursor:pointer;
+    background:var(--card2); border:1px solid var(--line); color:var(--txt);
+    border-radius:14px; padding:14px 16px; margin-bottom:10px; font-size:15px;
+    transition:transform .12s, border-color .12s, background .12s;
+  }
+  .opt:active{transform:scale(.98);}
+  .opt:hover{border-color:var(--accent);}
+  .opt b{color:var(--accent); margin-right:6px;}
+  .result-hero{text-align:center; padding:8px 0 4px;}
+  .emoji{font-size:56px; line-height:1; margin:6px 0 10px;}
+  .type-name{font-size:22px; font-weight:800; background:linear-gradient(90deg,var(--gold),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .oneline{color:var(--sub); font-size:14px; margin:8px 0 18px;}
+  .bars{margin:14px 0 6px;}
+  .bar-row{display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:13px;}
+  .bar-row span{width:64px; color:var(--sub); flex:none;}
+  .bar-track{flex:1; height:8px; background:var(--line); border-radius:999px; overflow:hidden;}
+  .bar-track > i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),#8f7bff); border-radius:999px; transition:width .8s cubic-bezier(.2,.7,.2,1);}
+  .desc{font-size:14px; margin:14px 0;}
+  .quote{border-left:3px solid var(--accent2); padding:6px 12px; color:var(--txt); font-style:italic; margin:12px 0; font-size:14px; background:rgba(255,255,255,.02); border-radius:0 8px 8px 0;}
+  .share-box{background:var(--card2); border:1px dashed var(--line); border-radius:12px; padding:12px 14px; font-size:13px; color:var(--sub); margin:14px 0 4px;}
+  .share-box b{color:var(--txt);}
+  .foot{text-align:center; color:var(--sub); font-size:11px; margin-top:16px; line-height:1.7;}
+  .mode-box{margin:18px 0 4px;}
+  .mode-title{font-size:12px; color:var(--sub); letter-spacing:1px; margin-bottom:10px;}
+  .mode-box .btn small{display:block; font-weight:400; font-size:11px; opacity:.72; margin-top:3px;}
+  .mode-box .btn.ghost small{color:var(--sub);}
+  .depth-flag{display:inline-block; font-size:10px; color:var(--accent2); border:1px solid var(--line); border-radius:999px; padding:1px 7px; margin-left:6px; vertical-align:middle;}
+  .toast{position:fixed; left:50%; bottom:32px; transform:translateX(-50%);
+    background:#2a323f; color:#fff; padding:10px 18px; border-radius:999px; font-size:13px;
+    opacity:0; pointer-events:none; transition:opacity .3s, bottom .3s; z-index:99;}
+  .toast.show{opacity:1; bottom:44px;}
+  .hidden{display:none;}
+  .figure-card{background:var(--card2); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin:16px 0 4px;}
+  .figure-title{font-size:12px; color:var(--accent); margin-bottom:8px; letter-spacing:1px;}
+  .figure-main{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap; margin-bottom:8px;}
+  .figure-name{font-size:20px; font-weight:800; color:var(--gold);}
+  .figure-world{font-size:13px; color:var(--sub);}
+  .figure-world::before{content:"· ";}
+  .figure-world::after{content:"同型"; font-size:11px; border:1px solid var(--line); border-radius:999px; padding:1px 6px; margin-left:4px; color:var(--sub);}
+  .figure-note{font-size:13px; color:var(--txt); line-height:1.7;}
+  .figure-bio{margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); font-size:12.5px; color:var(--sub); line-height:1.75;}
+  .figure-match{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:12px; padding:9px 12px; border-radius:10px; background:rgba(255,210,122,.10); border:1px solid rgba(255,210,122,.28); font-size:12px; color:var(--sub);}
+  .figure-match b{color:var(--gold); font-size:14px; letter-spacing:1px;}
+  .figure-unique{margin-top:8px; font-size:10.5px; color:var(--sub); opacity:.7; letter-spacing:.5px; text-align:center;}
+  .rarity-badge{display:inline-block; font-size:11px; font-weight:800; padding:2px 9px; border-radius:20px; letter-spacing:.08em; vertical-align:middle; margin-left:4px;}
+  .rarity-N{background:rgba(150,150,150,.18); color:#9a9a9a; border:1px solid rgba(150,150,150,.4);}
+  .rarity-R{background:rgba(110,168,255,.16); color:#6ea8ff; border:1px solid rgba(110,168,255,.45);}
+  .rarity-SR{background:rgba(200,130,255,.16); color:#c482ff; border:1px solid rgba(200,130,255,.5);}
+  .rarity-SSR{background:linear-gradient(90deg,rgba(255,180,80,.25),rgba(255,110,150,.25)); color:#ffbe6a; border:1px solid rgba(255,180,110,.6); box-shadow:0 0 10px rgba(255,170,100,.3);}
+  .rarity-note{margin-top:8px; font-size:11px; color:var(--sub); line-height:1.6; text-align:center;}
+  .rarity-sci{margin:14px 0; border:1px dashed rgba(200,169,106,.4); border-radius:10px; padding:10px 12px; background:rgba(200,169,106,.05);}
+  .rarity-sci summary{cursor:pointer; font-size:12px; font-weight:700; color:var(--gold);}
+  .rarity-sci p{font-size:11px; color:var(--sub); line-height:1.65; margin:8px 0 0;}
+  .rarity-sci p.warn{color:#ffab7a;}
+  .figure-bio::before{content:"📖 关于他/她"; display:block; font-size:11px; color:var(--accent); letter-spacing:1px; margin-bottom:4px;}ttom:5px;}
+  .code-box{display:flex; align-items:center; gap:8px; background:var(--card2); border:1px dashed var(--line); border-radius:10px; padding:10px 12px; font-size:13px; color:var(--sub); margin:12px 0 4px;}
+  .code-box b{color:var(--gold); font-size:15px; letter-spacing:1px;}
+  .mini-btn{margin-left:auto; border:1px solid var(--line); background:transparent; color:var(--accent); border-radius:8px; padding:4px 10px; font-size:12px; cursor:pointer;}
+  .sel{width:100%; background:var(--card2); border:1px solid var(--line); color:var(--txt); border-radius:10px; padding:11px 12px; font-size:14px; margin:4px 0 12px;}
+  .cmp-row{display:flex; align-items:center; gap:10px; margin-top:10px;}
+  .cmp-row label{width:28px; color:var(--sub); font-size:13px; flex:none;}
+  .cmp-hero{display:flex; align-items:center; justify-content:space-around; margin:18px 0 6px;}
+  .cmp-side{text-align:center; flex:1;}
+  .cmp-emoji{font-size:40px;}
+  .cmp-nm{font-size:14px; font-weight:700; margin-top:4px;}
+  .cmp-x{font-size:18px; color:var(--accent2); font-weight:800;}
+  .cmp-rel{text-align:center; font-size:18px; font-weight:800; color:var(--gold); margin:10px 0 4px;}
+  .cmp-score{text-align:center; margin:8px 0 4px;}
+  .cmp-score span{font-size:34px; font-weight:800; background:linear-gradient(90deg,var(--gold),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .cmp-score small{display:block; color:var(--sub); font-size:11px; letter-spacing:2px;}
+  .cmp-bar{height:8px; background:var(--line); border-radius:999px; overflow:hidden; margin:6px 0 14px;}
+  .cmp-bar > i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--gold),var(--accent2)); transition:width .8s cubic-bezier(.2,.7,.2,1);}
+  .cmp-chem{font-size:14px; line-height:1.75; background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:12px 14px;}
+  .cmp-ocean{margin:14px 0 4px;}
+  .cmp-legend{display:flex; justify-content:space-between; font-size:11px; color:var(--sub); margin-bottom:6px;}
+  .cmp-ocean .bar-row span{width:52px;}
+
+  /* ===== 科学对表 BFI-10 模块 ===== */
+  .sci-card{margin:16px 0; border:1px dashed rgba(110,168,255,.45); border-radius:12px;
+    padding:12px 14px; background:rgba(110,168,255,.06);}
+  .sci-card .sci-title{font-size:13px; font-weight:700; color:#8fb4ff; margin-bottom:6px;}
+  .sci-card p{font-size:11px; color:var(--sub); line-height:1.65; margin:4px 0;}
+  .sci-consent{display:flex; align-items:flex-start; gap:8px; margin:10px 0 8px; font-size:11px; color:var(--sub); line-height:1.5; cursor:pointer;}
+  .sci-consent input{margin-top:2px; width:15px; height:15px; flex:none; accent-color:#6ea8ff; cursor:pointer;}
+  .sci-consent.dis{opacity:.5; cursor:not-allowed;}
+  .btn.sci{background:linear-gradient(90deg,#6ea8ff,#8f7bff);}
+  .btn.sci:disabled{opacity:.4; filter:grayscale(.6); cursor:not-allowed;}
+  .bfi-prog{font-size:11px; color:var(--sub); text-align:center; margin-bottom:8px; letter-spacing:1px;}
+  .bfi-q{margin:14px 0 10px; padding:12px 14px; background:var(--card2); border:1px solid var(--line); border-radius:12px;}
+  .bfi-q .bfi-stem{font-size:11px; color:var(--gold); margin-bottom:8px; letter-spacing:.04em;}
+  .bfi-q .bfi-stem b{color:var(--txt);}
+  .bfi-scale{display:flex; gap:6px; margin-top:8px;}
+  .bfi-scale .sc{flex:1; text-align:center; padding:8px 0; border:1px solid var(--line); border-radius:8px;
+    font-size:12px; color:var(--sub); cursor:pointer; background:transparent; transition:.15s;}
+  .bfi-scale .sc:hover{border-color:#6ea8ff;}
+  .bfi-scale .sc.on{background:linear-gradient(90deg,#6ea8ff,#8f7bff); color:#fff; border-color:transparent; font-weight:700;}
+  .bfi-legend{display:flex; justify-content:space-between; font-size:10px; color:var(--sub); margin-top:4px;}
+  #s-admin table{width:100%; border-collapse:collapse; font-size:11px; margin:10px 0;}
+  #s-admin th,#s-admin td{border:1px solid var(--line); padding:5px 6px; text-align:center;}
+  #s-admin th{color:var(--gold); font-weight:700; background:rgba(200,169,106,.08);}
+  #s-admin .adm-hd{font-size:12px; color:#ff9a9a; text-align:center; margin-bottom:4px; letter-spacing:.05em;}
+  #s-admin input.pw{width:100%; padding:9px 12px; border-radius:10px; border:1px solid var(--line);
+    background:var(--card2); color:var(--txt); font-size:14px; margin:8px 0;}
+  #s-admin .adm-bar{display:flex; gap:8px; flex-wrap:wrap; margin:8px 0;}
+  #s-admin .adm-bar .btn{flex:1; min-width:120px; padding:9px 10px; font-size:12px;}
+  .adm-empty{font-size:12px; color:var(--sub); text-align:center; padding:16px 0;}
+  .adm-note{font-size:11px; color:var(--sub); text-align:center; margin:6px 0;}
+  .adm-corr td.good{color:#57d9a3; font-weight:700;}
+  .adm-corr td.mid{color:#ffd27a; font-weight:700;}
+  .adm-corr td.low{color:#ff8f8f; font-weight:700;}
+</style>
+</head>
+<body>
+<div id="app">
+  <img id="shareCover" src="share_cover.png" alt="" aria-hidden="true" style="display:none;width:100%;max-width:300px;" onerror="this.style.display='none'" onload="if(this.naturalWidth>0)this.style.display='block'">
+
+  <!-- 封面 -->
+  <section id="s-cover" class="card">
+    <span class="tag">叙事式人格测评</span>
+    <h1>末班之后 · 72 小时</h1>
+    <p class="sub">城市在一夜间被按下暂停键，你是最后一个还醒着的人。5 大场景题库、<b style="color:var(--gold)">40 个处境</b>里随机抽题——凭第一反应选，别想"该怎么选"。没有人评判你，题目也没有对错。</p>
+
+    <div class="mode-box">
+      <div class="mode-title">选一个深度开始</div>
+      <button class="btn" onclick="Game.start('lite')">
+        ⚡ 轻量版 · 8 题 · 约 3 分钟
+        <small>快速出结果，适合先试试手</small>
+      </button>
+      <button class="btn ghost" onclick="Game.start('deep')" style="margin-top:10px;">
+        🔍 深度版 · 12 题 · 约 6 分钟
+        <small>掺入需要权衡的难题，画像更细</small>
+      </button>
+    </div>
+
+    <p class="foot">本测试为娱乐向自我探索工具，非临床诊断。<br>结果仅供朋友间分享取乐 😉</p>
+  </section>
+
+  <!-- 答题 -->
+  <section id="s-quiz" class="card hidden">
+    <div class="progress"><i id="bar"></i></div>
+    <div class="qnum" id="qnum"></div>
+    <div class="scene" id="scene"></div>
+    <div id="opts"></div>
+  </section>
+
+  <!-- 好友对比 -->
+  <section id="s-compare" class="card hidden">
+    <span class="tag">💞 好友关系实验室</span>
+    <h1>咱俩，是什么关系？</h1>
+    <p class="sub">各自输入对方的对比码（或选一个类型），看看你们对应的历史人物，是搭档、是知己，还是同向不同路。</p>
+    <div class="cmp-row">
+      <label>我</label>
+      <select id="cmp-a" class="sel"></select>
+    </div>
+    <div class="cmp-row">
+      <label>TA</label>
+      <select id="cmp-b" class="sel"></select>
+    </div>
+    <button class="btn" onclick="Game.doCompare()">看看我们的关系 →</button>
+    <div id="cmp-result" class="hidden">
+      <div class="cmp-hero">
+        <div class="cmp-side"><div class="cmp-emoji" id="cmp-ea"></div><div class="cmp-nm" id="cmp-na"></div></div>
+        <div class="cmp-x">×</div>
+        <div class="cmp-side"><div class="cmp-emoji" id="cmp-eb"></div><div class="cmp-nm" id="cmp-nb"></div></div>
+      </div>
+      <div class="cmp-rel" id="cmp-rel"></div>
+      <div class="cmp-score"><span id="cmp-scorenum"></span><small>契合度</small></div>
+      <div class="cmp-bar"><i id="cmp-scorebar"></i></div>
+      <div class="cmp-chem" id="cmp-chem"></div>
+      <div class="cmp-ocean" id="cmp-ocean"></div>
+      <button class="btn share" onclick="Game.shareCompare()">📣 晒出我们的关系</button>
+    </div>
+    <button class="btn ghost" onclick="Game.backToResult()">← 返回我的结果</button>
+  </section>
+
+  <!-- 结果 -->
+  <section id="s-result" class="card hidden">
+    <div class="result-hero">
+      <div class="emoji" id="r-emoji"></div>
+      <div class="type-name" id="r-name"></div>
+      <div class="oneline" id="r-oneline"></div>
+    </div>
+    <div class="bars" id="r-bars"></div>
+    <div class="desc" id="r-desc"></div>
+    <div class="quote" id="r-quote"></div>
+
+    <div class="figure-card" style="border-color:#c8a96a;">
+      <div class="figure-title">✦ 你的专属命格 · 独一无二 <span class="rarity-badge" id="r-rarity"></span></div>
+      <div class="figure-main"><span class="figure-name" id="r-destiny" style="font-size:1.5rem;letter-spacing:.15em;"></span></div>
+      <div class="figure-note" id="r-destiny-desc"></div>
+      <div class="rarity-note" id="r-rarity-note"></div>
+      <div class="figure-unique" id="r-lastword" style="margin-top:10px;font-style:italic;"></div>
+    </div>
+
+    <div class="figure-card">
+      <div class="figure-title">你的历史原型</div>
+      <div class="figure-main"><span class="figure-name" id="r-figure"></span><span class="figure-world" id="r-figureworld"></span></div>
+      <div class="figure-note" id="r-figurenote"></div>
+      <div class="figure-bio" id="r-figurebio"></div>
+      <div class="figure-match">
+        <span class="match-code">专属命格 No.<b id="r-matchcode"></b></span>
+        <span class="match-pct">与这位原型契合度 <b id="r-matchpct"></b>%</span>
+      </div>
+      <div class="figure-unique" id="r-sig"></div>
+    </div>
+
+    <details class="rarity-sci">
+      <summary>🔬 稀有度是怎么算出来的？点开看科学依据与边界</summary>
+      <p><b>依据一 · 什么算“稀有”</b>：人格科学把“不寻常性”（unusualness）定义为两种来源——某特质取值罕见（unusual values），或多个特质以不寻常方式共同出现（unusual combinations）。本测试同时看这两点：单维偏离 + 组合反常。</p>
+      <p><b>依据二 · 极值怎么划</b>：心理测量惯例把均值 ±0.5 标准差内视为“平均”，之外算高/低。我们以每维满分的 50% 记极值、75% 记统计极值作为近似替代（本测试非标准化量表，属产品化映射，非临床分界）。</p>
+      <p><b>四档规则</b>：N 常见＝无极值维；R 少见＝1 个极值维；SR 稀有＝≥2 极值维或 1 统计极值；SSR 极罕＝≥1 统计极值 且 组合反常（O/C、E/A 反向 或 N/O 同高）。</p>
+      <p class="warn">⚠️ 稀有 ≠ 优秀 / 聪明 / 有价值。它只是你在人群中的相对位置，是计数不是评级。样本、地区、年份、工具一变，稀有度排名就会变——<b>不要把一次结果当成对人的评判，包括对自己。</b></p>
+    </details>
+
+    <div class="code-box">
+      你的对比码：<b id="r-code"></b>
+      <button class="mini-btn" onclick="Game.copyCode()">复制</button>
+    </div>
+
+    <button class="btn share" onclick="Game.share()">📣 生成我的分享文案</button>
+    <button class="btn" id="btnPoster" onclick="Game.makePoster()" style="background:linear-gradient(90deg,#ffd27a,#ff8fb1);color:#1a1205;font-weight:800;">🖼 生成我的海报</button>
+    <div id="posterBox" class="hidden" style="margin:10px 0;">
+      <canvas id="posterCv" width="1080" height="1440" style="display:none;"></canvas>
+      <img id="posterImg" alt="我的末班之后命格海报">
+      <p class="rarity-note">长按图片保存，去朋友圈晒你的命格 📲</p>
+      <button class="btn ghost" onclick="Game.downloadPoster()">⬇ 下载海报（电脑端）</button>
+    </div>
+    <button class="btn" onclick="Game.gotoCompare()" style="background:linear-gradient(90deg,#57d9a3,#6ea8ff);">💞 和好友测关系</button>
+
+    <div class="sci-card" id="sci-card">
+      <div class="sci-title">🔬 科学对表计划（自愿）</div>
+      <p>我们正用国际通用的 10 题人格量表（BFI-10）验证本测试的准确度。花 1 分钟完成它，帮我们把「觉得准」变成「测得准」。数据匿名，仅用于研究。</p>
+      <label class="sci-consent" id="sci-consent-label" for="sci-consent">
+        <input type="checkbox" id="sci-consent" onchange="Sci.toggleConsent()">
+        <span>我已知情同意，数据可匿名用于效度研究</span>
+      </label>
+      <button class="btn sci" id="sci-enter" onclick="Sci.enter()" disabled>开始科学对表 · 约 1 分钟</button>
+    </div>
+
+    <button class="btn ghost" onclick="Game.restart()">↻ 再测一次</button>
+    <div class="share-box">
+      把链接和你的<b>对比码</b>一起甩给朋友，TA 测完输入你们的码，就能看到——<b>你们对应的历史人物，是什么关系、合不合得来。</b>
+    </div>
+    <p class="foot">「末班之后」是一款叙事式人格探索小实验。<br>借鉴 GPM 游戏化测评思路：不问你是谁，只看你怎么做。结果仅供娱乐，非临床诊断。</p>
+  </section>
+
+  <section id="s-bfi" class="card hidden">
+    <div class="bfi-prog" id="bfi-prog"></div>
+    <div id="bfi-list"></div>
+    <button class="btn sci" onclick="Sci.submit()">提交，帮我把「觉得准」变成「测得准」</button>
+    <button class="btn ghost" onclick="Sci.skip()">暂不参与，返回结果</button>
+    <p class="foot">BFI-10 · Rammstedt &amp; John (2007) 公版量表。每特质 2 题，反向题 6 减原分后求和。全程匿名，不采集任何身份信息；随时可关闭放弃，不影响你的测试结果。</p>
+  </section>
+
+  <section id="s-admin" class="card hidden">
+    <div class="adm-hd">🛡 内部数据面板 · 请勿分享口令</div>
+    <div id="adm-login">
+      <p class="adm-note">请输入访问口令以查看匿名研究数据。</p>
+      <input class="pw" type="password" id="adm-pw" placeholder="访问口令" onkeydown="if(event.key==='Enter')Admin.login()">
+      <button class="btn sci" onclick="Admin.login()">进入后台</button>
+      <button class="btn ghost" onclick="Game.show('cover')">返回封面</button>
+    </div>
+    <div id="adm-panel" class="hidden">
+      <div class="adm-note" id="adm-count"></div>
+      <div class="adm-bar">
+        <button class="btn sci" onclick="Admin.exportCSV()">⬇ 导出 CSV</button>
+        <button class="btn" style="background:linear-gradient(90deg,#57d9a3,#6ea8ff);" onclick="Admin.corr()">📈 计算即时相关</button>
+        <button class="btn ghost" onclick="Admin.clearAll()">🗑 清空数据</button>
+      </div>
+      <div id="adm-corr"></div>
+      <div id="adm-table"></div>
+      <button class="btn ghost" onclick="Game.show('cover')">返回封面</button>
+    </div>
+  </section>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// 场景化题库：5 个场景主题，每个主题下挂多道题。
+// 每轮只从每个场景抽题、凑满 8 道，保证每次重测组合不同、又不失人格覆盖。
+// 每题可带 deep:true 标记为"深度题"（更需权衡、社会赞许性更接近，只出现在深度版）
+// 【计分规则 v12】每题只测一个特质，题眼格式 {trait,dose}：dose 0=低剂量 / 1=中 / 2=高。
+// 每题三选项 = 该特质低/中/高，行为不同但社会赞许性相当；无负分、无道德评价词。
+// 每题场景里都埋一个"你"的锚点（你的状态/你的小习惯），把玩家从"末日角色"拉回"自己"。
+// 全库 40 题 = 5 特质 × 8 题，每特质均衡分布在各场景；抽题按"每特质等题数"进行。
+const SCENES = [
+  { name:"桥上停摆", hint:"开端 · 陌生", qs:[
+    // Q1 O · 沉浸观察
+    { scene:"深夜末班车只剩你和一个陌生乘客。车突然停在一座空无一人的桥上，司机不见了——你攥着手机刚被惊醒。车厢角落，一只橘猫正慢条斯理地舔着爪子。你会——",
+      opts:[
+        {t:"扫一眼车厢就交差，眼下只想知道怎么最快离开", o:{O:0,_trait:"O",_trait_v:0}},
+        {t:"低头逗一下橘猫，顺手看看它歇着的那截车厢", o:{O:1,_trait:"O",_trait_v:1}},
+        {t:"顺着橘猫的来历环顾四周，把车厢每个角落都看进眼里", o:{O:2,_trait:"O",_trait_v:2}},
+      ]},
+    // Q2 E · 主动联结
+    { scene:"平时坐车总戴着耳机的你，这会儿摘下了耳机。身边那个陌生乘客小声说了句「怎么办」。你会——",
+      opts:[
+        {t:"点点头，各自沉默着，先安安静静待一会儿", o:{E:0,_trait:"E",_trait_v:0}},
+        {t:"接一句「是挺怪」，两人有一搭没一搭地聊起来", o:{E:1,_trait:"E",_trait_v:1}},
+        {t:"主动把话接过去，三两句就把气氛聊热", o:{E:2,_trait:"E",_trait_v:2}},
+      ]},
+    // Q3 C · 条理清点
+    { scene:"你习惯随手记东西。车停了，你掏出手机想理一理现状。你会——",
+      opts:[
+        {t:"看一眼时间就锁屏，等列车员回来安排", o:{C:0,_trait:"C",_trait_v:0}},
+        {t:"记下时间和地点，再摸摸口袋清点手头有什么", o:{C:1,_trait:"C",_trait_v:1}},
+        {t:"把时间、随身物、车停的位置一条条列清楚，心里排个序", o:{C:2,_trait:"C",_trait_v:2}},
+      ]},
+    // Q4 N · 警觉悬置
+    { scene:"广播「嗞」地响了一声又断了，像有人隔着很远想说话——你一向对声音敏感。你会——",
+      opts:[
+        {t:"记下这一声，先继续做手边的事，不往心里去", o:{N:0,_trait:"N",_trait_v:0}},
+        {t:"竖起耳朵又等了一会儿，听它会不会再响", o:{N:1,_trait:"N",_trait_v:1}},
+        {t:"不由自主往最坏处想，越琢磨越清醒，索性守着等它再响", o:{N:2,_trait:"N",_trait_v:2}},
+      ]},
+    // Q5 O(d) · 探索好奇
+    { scene:"你背包里揣着那只随身小电筒。座位下遗落了一只还在亮屏的导航仪，屏幕上一颗红点一闪一闪。你会——", deep:true,
+      opts:[
+        {t:"瞥一眼就搁下，眼下先想怎么离开这座桥更要紧", o:{O:0,_trait:"O",_trait_v:0}},
+        {t:"捡起来看两眼红点，琢磨它大概指向哪儿", o:{O:1,_trait:"O",_trait_v:1}},
+        {t:"打亮电筒凑近，把导航仪翻来覆去研究它到底指向哪儿", o:{O:2,_trait:"O",_trait_v:2}},
+      ]},
+    // Q6 E(d) · 主动联结
+    { scene:"你习惯遇到事先招呼人。车门旁的应急阀贴着一张泡发卷边的说明，字迹糊了大半。你会——", deep:true,
+      opts:[
+        {t:"自己蹲下来盯着看，不太想打断别人", o:{E:0,_trait:"E",_trait_v:0}},
+        {t:"喊陌生乘客过来一起看一眼，两个人总好办事", o:{E:1,_trait:"E",_trait_v:1}},
+        {t:"招呼乘客一起上手试，头挨着头把这张说明琢磨透", o:{E:2,_trait:"E",_trait_v:2}},
+      ]},
+    // Q7 C(d) · 条理计划
+    { scene:"陌生乘客说TA认识路，催你马上跟TA走，可你俩才认识十分钟——你出门前总爱列张清单。你会——", deep:true,
+      opts:[
+        {t:"拎起包就跟，边走边看，计划等安顿了再说", o:{C:0,_trait:"C",_trait_v:0}},
+        {t:"先问清TA说的路大致怎么走，再决定跟不跟", o:{C:1,_trait:"C",_trait_v:1}},
+        {t:"停下把已知的信息理一遍、想好退路，再迈那一步", o:{C:2,_trait:"C",_trait_v:2}},
+      ]},
+    // Q8 A(d) · 体谅共情
+    { scene:"车上空调停了，桥上越来越冷，你和陌生乘客都只剩一件外套——你手边正暖着那只橘猫。你会——", deep:true,
+      opts:[
+        {t:"把外套裹紧、连猫也塞进怀里自己捂着，先顾好自己这一份", o:{A:0,_trait:"A",_trait_v:0}},
+        {t:"问一句TA冷不冷，把猫往两人中间挪挪，各暖一半", o:{A:1,_trait:"A",_trait_v:1}},
+        {t:"提议和TA轮流披着、搭把手，把橘猫也塞中间一起熬过去", o:{A:2,_trait:"A",_trait_v:2}},
+      ]},
+  ]},
+  { name:"无人便利店", hint:"资源 · 秩序", qs:[
+    // Q9 A · 体谅共情
+    { scene:"你饿着肚子、血糖有点低，摸到一家无人看管的便利店，卷帘门半掀着，收银台的灯还亮着。货架上食物有限，旁边的人正一捧一捧往袋里装。你会——",
+      opts:[
+        {t:"先把自己这一份拿够塞满背包，旁的顾不上", o:{A:0,_trait:"A",_trait_v:0}},
+        {t:"拿够自己几天的份量，顺手没挡着后来的人", o:{A:1,_trait:"A",_trait_v:1}},
+        {t:"特意给后来的人留半排货架，自己去够得着的那几样", o:{A:2,_trait:"A",_trait_v:2}},
+      ]},
+    // Q10 E · 主动联结
+    { scene:"收银台旁贴着张手写的便签：「想搭把手、想找人搭伴的，在这儿签个名」。笔还夹在旁边——你手里正拎着刚挑好的水。你会——",
+      opts:[
+        {t:"看一眼就走，自己把自己那份事办完", o:{E:0,_trait:"E",_trait_v:0}},
+        {t:"签上名，有人凑过来问就搭两句", o:{E:1,_trait:"E",_trait_v:1}},
+        {t:"签完名顺手招呼几句，问大家都在哪儿歇脚", o:{E:2,_trait:"E",_trait_v:2}},
+      ]},
+    // Q11 E · 主动联结
+    { scene:"店里陆续进来了别人，彼此都不认识——你一进门就爱招呼人。你会——",
+      opts:[
+        {t:"自己寻自己要的，不特意去打招呼", o:{E:0,_trait:"E",_trait_v:0}},
+        {t:"跟最近的一个点点头，搭两句话", o:{E:1,_trait:"E",_trait_v:1}},
+        {t:"出声跟大家招呼，把人三三两两拢起来一块儿想办法", o:{E:2,_trait:"E",_trait_v:2}},
+      ]},
+    // Q12 N · 警觉悬置
+    { scene:"你刚走进后仓，后门「咔」地轻响了一声，四下没人——你一向对异常有预感。你会——",
+      opts:[
+        {t:"当成风吹门响，接着翻找物资", o:{N:0,_trait:"N",_trait_v:0}},
+        {t:"停一下手，听有没有第二声", o:{N:1,_trait:"N",_trait_v:1}},
+        {t:"当场绷起来，先把物资攥好、退到能看清门口的位置", o:{N:2,_trait:"N",_trait_v:2}},
+      ]},
+    // Q13 C(d) · 条理守序
+    { scene:"店里有人主张把物资集中起来统一管，怕乱——你包里常备一支笔。你会——", deep:true,
+      opts:[
+        {t:"觉得各管各的也行，不急着立什么规矩", o:{C:0,_trait:"C",_trait_v:0}},
+        {t:"觉得该有个章法，但先看看别人怎么想", o:{C:1,_trait:"C",_trait_v:1}},
+        {t:"当场接过笔立个登记和监督的规矩，谁来取、取了什么记清楚", o:{C:2,_trait:"C",_trait_v:2}},
+      ]},
+    // Q14 A(d) · 体谅共情
+    { scene:"有人偷偷多塞了一份进怀里、装作没事，正巧被低头清点的你撞见。你会——", deep:true,
+      opts:[
+        {t:"装作没瞧见，转身接着清点自己的", o:{A:0,_trait:"A",_trait_v:0}},
+        {t:"等没别人时，过去提一句", o:{A:1,_trait:"A",_trait_v:1}},
+        {t:"把TA拉到货架后面低声说两句，别当众让人下不来台", o:{A:2,_trait:"A",_trait_v:2}},
+      ]},
+    // Q15 O(d) · 探索好奇
+    { scene:"冷藏柜最后一支胰岛素旁压着张纸条：「急用 · 疑似糖尿病人」——你手上正翻着那份物资清单。你会——", deep:true,
+      opts:[
+        {t:"不细究，把注意力放回清单上要紧的物资", o:{O:0,_trait:"O",_trait_v:0}},
+        {t:"看一眼纸条，留意它在第几格", o:{O:1,_trait:"O",_trait_v:1}},
+        {t:"停下来琢磨这张纸条的来历，把它当一条线索记进判断里", o:{O:2,_trait:"O",_trait_v:2}},
+      ]},
+    // Q16 N(d) · 警觉悬置
+    { scene:"打烊广播突然循环起「请在三十分钟内撤离」——你听见时手正搭在门框上，货架还有一半没归位。你会——", deep:true,
+      opts:[
+        {t:"先把手头的活儿收一收，从容往外走", o:{N:0,_trait:"N",_trait_v:0}},
+        {t:"留神时间，加快手上的动作", o:{N:1,_trait:"N",_trait_v:1}},
+        {t:"当场绷紧，把最要紧的几样一把塞进包里，盯着出口随时能撤", o:{N:2,_trait:"N",_trait_v:2}},
+      ]},
+  ]},
+  { name:"人潮与选择", hint:"群体 · 信任", qs:[
+    // Q17 A · 体谅共情
+    { scene:"你遇到另一个醒着的人蹲在墙角、抱着膝盖说想放弃——你手里正拎着刚分到的水。你会——",
+      opts:[
+        {t:"递瓶水过去，各自歇着，不多打扰", o:{A:0,_trait:"A",_trait_v:0}},
+        {t:"在TA旁边坐下，陪着，偶尔搭句话", o:{A:1,_trait:"A",_trait_v:1}},
+        {t:"先不急着说办法，陪TA把憋着的话一句句说完", o:{A:2,_trait:"A",_trait_v:2}},
+      ]},
+    // Q18 C · 条理担当
+    { scene:"一小群人正推举一个「带头人」协调资源——你习惯先把手头的事做完再说别的。你会——",
+      opts:[
+        {t:"先忙完自己那份，带头的事让别人去", o:{C:0,_trait:"C",_trait_v:0}},
+        {t:"要是没更合适的人，也愿意搭把手领着做", o:{C:1,_trait:"C",_trait_v:1}},
+        {t:"往前站半步接过这活儿，把该分工的、该排期的一件件定下来", o:{C:2,_trait:"C",_trait_v:2}},
+      ]},
+    // Q19 E · 主动联结
+    { scene:"你在这支队伍里排了一下午队，还没跟谁说上话。歇脚时你会——",
+      opts:[
+        {t:"自己靠着墙歇着，不特意凑过去", o:{E:0,_trait:"E",_trait_v:0}},
+        {t:"跟挨着的人搭两句，认识一两个", o:{E:1,_trait:"E",_trait_v:1}},
+        {t:"起身在人堆里走一圈，把生面孔一个个聊熟", o:{E:2,_trait:"E",_trait_v:2}},
+      ]},
+    // Q20 N · 警觉悬置
+    { scene:"队伍里有人开始传一个没影儿的坏消息，人心一封封晃起来——你领到物资刚坐下。你会——",
+      opts:[
+        {t:"不太往心里去，接着歇自己的", o:{N:0,_trait:"N",_trait_v:0}},
+        {t:"听着，也留意别人的反应", o:{N:1,_trait:"N",_trait_v:1}},
+        {t:"立刻警觉起来，非要把这消息的虚实弄个清楚才踏实", o:{N:2,_trait:"N",_trait_v:2}},
+      ]},
+    // Q21 O(d) · 探索替代
+    { scene:"带头人一个决定明显掺了私心，当众揭穿又会让队伍当场裂开——你手里正捏着那只记满字的本子。你会——", deep:true,
+      opts:[
+        {t:"照着安排做，不去多想别的路子", o:{O:0,_trait:"O",_trait_v:0}},
+        {t:"散会后单独找TA，把话和余地各留一份", o:{O:1,_trait:"O",_trait_v:1}},
+        {t:"另外想个第三方案，既把话点到位又不让队伍散掉", o:{O:2,_trait:"O",_trait_v:2}},
+      ]},
+    // Q22 A(d) · 分担共情
+    { scene:"队里要推一个人去做最危险的外出探路，一圈人全低着头不出声——你刚啃完半块干粮。你会——", deep:true,
+      opts:[
+        {t:"低头不吭声，真轮到自己再认", o:{A:0,_trait:"A",_trait_v:0}},
+        {t:"看有没有更合适的人先站出来", o:{A:1,_trait:"A",_trait_v:1}},
+        {t:"提议抽签或轮流，别让这份风险总压在同一个人身上", o:{A:2,_trait:"A",_trait_v:2}},
+      ]},
+    // Q23 O(d) · 探索替代
+    { scene:"撤离前清点，队里有个帮不上忙、还拖慢脚步的人，带不带走成了难题——你蹲在地上正画着那张路线图。你会——", deep:true,
+      opts:[
+        {t:"照大多数人的意思办，没细想折中的办法", o:{O:0,_trait:"O",_trait_v:0}},
+        {t:"心里犯难，琢磨有没有两全的法子", o:{O:1,_trait:"O",_trait_v:1}},
+        {t:"绞尽脑汁想个折中方案，尽量把他也一起带走", o:{O:2,_trait:"O",_trait_v:2}},
+      ]},
+    // Q24 C(d) · 条理担当
+    { scene:"路上你成了事实上的主心骨，人人都盯着你下一步做什么——你肩上正挎着那只装册子的挎包。你会——", deep:true,
+      opts:[
+        {t:"走一步看一步，不太去张罗分工", o:{C:0,_trait:"C",_trait_v:0}},
+        {t:"把最要紧的几件扛下来，其余看情况", o:{C:1,_trait:"C",_trait_v:1}},
+        {t:"把该扛的扛起来，再清楚地把活儿分给靠得住的人", o:{C:2,_trait:"C",_trait_v:2}},
+      ]},
+  ]},
+  { name:"长夜独处", hint:"内心 · 情绪", qs:[
+    // Q25 N · 情绪唤醒
+    { scene:"夜里轮到你一个人守夜，四周安静得反常，只有炉火偶尔「啪」一声——你守夜前刚灌了口凉水。这一夜你——",
+      opts:[
+        {t:"看着火苗发呆，心里平平的，甚至有点享受这份安静", o:{N:0,_trait:"N",_trait_v:0}},
+        {t:"偶尔走神想两件小事，又把自己拉回来", o:{N:1,_trait:"N",_trait_v:1}},
+        {t:"不由自主往最坏处想，越想越清醒，睁着眼到天亮", o:{N:2,_trait:"N",_trait_v:2}},
+      ]},
+    // Q26 C · 复盘条理
+    { scene:"你终于能眯一会儿却翻来覆去睡不着，索性摸出手机。你会——",
+      opts:[
+        {t:"躺着等困意来，不去理那些事", o:{C:0,_trait:"C",_trait_v:0}},
+        {t:"在心里粗略过一遍今天", o:{C:1,_trait:"C",_trait_v:1}},
+        {t:"坐起来把明天要办的事在心里一条条排好", o:{C:2,_trait:"C",_trait_v:2}},
+      ]},
+    // Q27 E · 主动联结
+    { scene:"白天强撑着没事，夜里你翻来覆去睡不着，抬头看见隔着几个人也有一双眼睛睁着——你手里还攥着那只橘猫暖着的小毯角。你会——",
+      opts:[
+        {t:"不动声色，翻个身面朝墙，等自己睡过去", o:{E:0,_trait:"E",_trait_v:0}},
+        {t:"轻轻问一句「你也睡不着？」，说完就安静下来", o:{E:1,_trait:"E",_trait_v:1}},
+        {t:"把毯角递过去一点，低声跟那人聊起各自睡不着的心事", o:{E:2,_trait:"E",_trait_v:2}},
+      ]},
+    // Q28 A · 自我关怀
+    { scene:"深夜忽然想起一个没来得及说再见的人，你眼眶有点热。这一刻你——",
+      opts:[
+        {t:"把念想按下去，翻个身接着守", o:{A:0,_trait:"A",_trait_v:0}},
+        {t:"在心里跟TA说句话，慢慢平下来", o:{A:1,_trait:"A",_trait_v:1}},
+        {t:"任由那张脸浮上来，蒙着被子让自己好好难过一会儿", o:{A:2,_trait:"A",_trait_v:2}},
+      ]},
+    // Q29 O(d) · 表达宣泄
+    { scene:"你翻出随身的小本子想写点什么——你平时就爱在本子上写写画画。你会——", deep:true,
+      opts:[
+        {t:"合上本子，什么也不写，静静坐着也挺好", o:{O:0,_trait:"O",_trait_v:0}},
+        {t:"随手写两句眼下的心情和见闻", o:{O:1,_trait:"O",_trait_v:1}},
+        {t:"刷刷写下怕、写下想，把心里攒的东西一股脑倒到纸上", o:{O:2,_trait:"O",_trait_v:2}},
+      ]},
+    // Q30 N(d) · 情绪唤醒
+    { scene:"远处传来一声说不清是好是坏的响动，你孤身一人无从确认——你正独自守着这半宿。你会——",
+      opts:[
+        {t:"劝自己别多想，深吸两口气先养足精神", o:{N:0,_trait:"N",_trait_v:0}},
+        {t:"记下方位，压着心思想天亮再说", o:{N:1,_trait:"N",_trait_v:1}},
+        {t:"当场绷紧，攥着东西整晚都没敢合眼", o:{N:2,_trait:"N",_trait_v:2}},
+      ]},
+    // Q31 C(d) · 复盘条理
+    { scene:"你守完最后一班，天泛白了。这一夜的种种，你会——", deep:true,
+      opts:[
+        {t:"不去复盘，天亮了就翻篇", o:{C:0,_trait:"C",_trait_v:0}},
+        {t:"大致回想一下哪步顺、哪步悬", o:{C:1,_trait:"C",_trait_v:1}},
+        {t:"把这几天每个决定挨个翻出来复盘，哪步对、哪步悬，记在心里", o:{C:2,_trait:"C",_trait_v:2}},
+      ]},
+    // Q32 N(d) · 情绪唤醒
+    { scene:"你忙了一整天，这会儿才空下来——没有收音机也没人说话，只剩自己的呼吸声。这份漫长的安静让你——", deep:true,
+      opts:[
+        {t:"反倒定了下来，好久没这么清楚地听见自己的心跳", o:{N:0,_trait:"N",_trait_v:0}},
+        {t:"有点坐不住，起身找点小事做", o:{N:1,_trait:"N",_trait_v:1}},
+        {t:"坐立难安，非得找点活儿干把这份静打破才舒服", o:{N:2,_trait:"N",_trait_v:2}},
+      ]},
+  ]},
+  { name:"出路出现", hint:"告别 · 抉择", qs:[
+    // Q33 E · 主动联结
+    { scene:"第三天，一条通往城外的路真的出现了——你早把背包打好背上了。你会——",
+      opts:[
+        {t:"等大伙儿都动了再跟上，不急着出头", o:{E:0,_trait:"E",_trait_v:0}},
+        {t:"随人流往前走，边走边和旁边的搭话", o:{E:1,_trait:"E",_trait_v:1}},
+        {t:"背上包往队伍最前头走，带头迈出这一步", o:{E:2,_trait:"E",_trait_v:2}},
+      ]},
+    // Q34 A · 自我关怀
+    { scene:"走之前收拾行装，你手指摸到一张折了又折的旧照片——那是个你一直惦记的人。你会——",
+      opts:[
+        {t:"把照片留下不带，轻装上路", o:{A:0,_trait:"A",_trait_v:0}},
+        {t:"塞进背包侧袋，有空再看一眼", o:{A:1,_trait:"A",_trait_v:1}},
+        {t:"把它贴身塞进内袋，人不能没有念想", o:{A:2,_trait:"A",_trait_v:2}},
+      ]},
+    // Q35 O · 探索开放
+    { scene:"岔路口要做个决断：跟着大部队走，还是拐上一条没人选的小路——你站在路口，脚还没迈。你会——",
+      opts:[
+        {t:"汇进人流跟着大伙儿走，人多心里踏实", o:{O:0,_trait:"O",_trait_v:0}},
+        {t:"先探探两条路的动静再定", o:{O:1,_trait:"O",_trait_v:1}},
+        {t:"扭头拐上那条没人走的小路，机会常在没人去的地方", o:{O:2,_trait:"O",_trait_v:2}},
+      ]},
+    // Q36 C · 条理复盘
+    { scene:"72 小时结束，整座城市次第重新亮起——你手机里还存着那张随手列的清单。回头看这三天，你最想说的是——",
+      opts:[
+        {t:"总算熬过来了，往后的事往后再说", o:{C:0,_trait:"C",_trait_v:0}},
+        {t:"认识了一些可以常来往的人", o:{C:1,_trait:"C",_trait_v:1}},
+        {t:"我弄清了真出事那会儿，自己到底靠不靠得住", o:{C:2,_trait:"C",_trait_v:2}},
+      ]},
+    // Q37 E(d) · 主动联结
+    { scene:"出城后要接着走一段更远的路，众人七嘴八舌拿不定主意——你习惯遇事先张罗人。你会——", deep:true,
+      opts:[
+        {t:"跟着走就是，不掺和拿主意", o:{E:0,_trait:"E",_trait_v:0}},
+        {t:"有人问就说两句，把大家的意见合起来", o:{E:1,_trait:"E",_trait_v:1}},
+        {t:"把大家拢到一起，牵头把下一步定下来", o:{E:2,_trait:"E",_trait_v:2}},
+      ]},
+    // Q38 N(d) · 警觉悬置
+    { scene:"出城的路有道岔口：一边通向熟悉却已塌了半边的家，一边通向说不清的远方——你在岔口站了很久，风里有股说不清的味道。你会——", deep:true,
+      opts:[
+        {t:"认准一边迈开脚，不再反复权衡", o:{N:0,_trait:"N",_trait_v:0}},
+        {t:"心里掂量两边的利弊，再慢慢挪步", o:{N:1,_trait:"N",_trait_v:1}},
+        {t:"把两条路的动静、风险都想透，确认稳妥了才迈脚", o:{N:2,_trait:"N",_trait_v:2}},
+      ]},
+    // Q39 A(d) · 自我关怀
+    { scene:"一切恢复如常后，你反而常想起那些还困着、没能一起出来的人。你最想保留下来的变化是——", deep:true,
+      opts:[
+        {t:"把那些事放下，先顾好自己的日子", o:{A:0,_trait:"A",_trait_v:0}},
+        {t:"偶尔问候一下还在难处的人", o:{A:1,_trait:"A",_trait_v:1}},
+        {t:"更主动去联系那些在意的人，别再等「有空再说」", o:{A:2,_trait:"A",_trait_v:2}},
+      ]},
+    // Q40 O(d) · 探索开放
+    { scene:"一切结束，你翻着那只写满的本子，忽然有点想往更大的世界去走走。你最想保留下来的变化是——", deep:true,
+      opts:[
+        {t:"珍惜眼下这份安稳，不再折腾", o:{O:0,_trait:"O",_trait_v:0}},
+        {t:"对没去过的地方多留一份好奇", o:{O:1,_trait:"O",_trait_v:1}},
+        {t:"敢为想做的事迈出那一步，哪怕结果还是未知", o:{O:2,_trait:"O",_trait_v:2}},
+      ]},
+  ]},
+];
+
+// 深度分层：轻量版 8 题（只用基础题），深度版 12 题（基础题打底 + 掺入深度题）
+const TRAITS = ["O","C","E","A","N"];
+const ROUND_SIZE = {lite: 10, deep: 15};
+// 两版题库完全隔离：轻量版只抽基础题(q.deep 不为 true)，深度版只抽深度题(q.deep===true)。
+// 深度版绝不回落到基础池——因此做过轻量版的人，深度版不会遇到任何一道重复题。
+// 工具函数：Fisher-Yates 洗牌（返回新数组，不改动原数组）
+function shuffle(arr){
+  const a=(arr||[]).slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function buildRound(mode){
+  const all=SCENES.flatMap(function(sc){ return (sc.qs||[]).map(function(q){ return {scene:sc.name, deep:!!q.deep, q:q}; }); });
+  const pool=[];
+  TRAITS.forEach(function(tr){
+    const bs=shuffle(all.filter(function(it){ return !it.deep && traitOf(it.q)===tr; }));
+    const ds=shuffle(all.filter(function(it){ return it.deep && traitOf(it.q)===tr; }));
+    if(mode==='deep'){ pool.push(...bs.slice(0,1),...ds.slice(0,2)); }
+    else { pool.push(...bs.slice(0,2)); }
+  });
+  return shuffle(pool.slice(0,ROUND_SIZE[mode]));
+}
+function traitOf(q){ return q.opts[0].o._trait; }
+
+const TYPES = [
+  { key:"探路者", emoji:"🧭", oneline:"世界一停摆，你反而活了过来",
+    cond:r=>(r.O>=4&&r.E>=2),
+    desc:"你是对未知心跳加速的人。别人还在确认发生了什么，你已经走到车头去看了。变化对你不是威胁，是邀请。",
+    quote:"「没人知道外面是什么——那正好，我第一个去看看。」",
+    figure:"张骞", figureWorld:"麦哲伦",
+    figureNote:"西汉的张骞两次出使西域，走了十三年，第一次把中原之外的世界带回长安；麦哲伦用一生兑现「地球是圆的」——敢为未知押上全部的人，历史总会记住。",
+    figureBio:"张骞（？—前114年），西汉外交家。公元前138年奉汉武帝之命出使西域，途中被匈奴扣留长达十年，仍持汉节不失，逃脱后继续西行，抵达大宛、大月氏等国，十三年后仅余数人生还长安，史称「凿空」。他的第二次西行进一步打通了中原与西域的联系，为后来的丝绸之路奠定基础。麦哲伦（Ferdinand Magellan，1480—1521），葡萄牙航海家，1519年率船队从西班牙出发，横渡大西洋、穿越南美海峡进入太平洋，虽在菲律宾途中遇难，其船队最终完成人类首次环球航行，用行动证明了地球是圆的。" },
+  { key:"压舱石", emoji:"⚓", oneline:"越乱的场面，你越稳",
+    cond:r=>(r.C>=4&&r.N<=2),
+    desc:"你是灾难里的那根定海神针。别人崩溃时你在列清单、分物资、复盘决定。你不煽情，但你撑住了整个局。",
+    quote:"「别慌。先清点手上有什么，我们一件件来。」",
+    figure:"诸葛亮", figureWorld:"乔治·华盛顿",
+    figureNote:"诸葛亮「鞠躬尽瘁」，事无巨细皆亲手料理，撑起一整个蜀汉；华盛顿在最该抓住权力的时刻选择交出它——真正稳的人，从不靠戏剧性取胜。",
+    figureBio:"诸葛亮（181—234年），字孔明，三国蜀汉丞相。刘备三顾茅庐请其出山，他提出《隆中对》定下三分天下之策；刘备去世后受托孤之重，事无巨细亲力亲为，内修政理、外治甲兵，五次北伐，最终「鞠躬尽瘁，死而后已」，成为东方智慧与忠诚的化身。乔治·华盛顿（George Washington，1732—1799），美国首任总统，独立战争大陆军总司令，领导美国赢得独立；两届任期届满后主动退位交权，确立了和平移交权力的传统，被尊为「美国国父」。" },
+  { key:"黏合剂", emoji:"🫂", oneline:"你先看见人，再看见问题",
+    cond:r=>(r.A>=4&&r.A>=r.E&&r.A>=r.O),
+    desc:"物资、计划、路线都可以再议，但'人还在不在'是你最先关心的事。你把一群陌生人变成了能互相托付的人。",
+    quote:"「先不谈怎么办，你先把话说完，我听着。」",
+    figure:"刘备", figureWorld:"特蕾莎修女",
+    figureNote:"刘备论才智不算顶尖，却让关羽、张飞、诸葛亮死心追随——他把「人」放在一切之前；特蕾莎修女在加尔各答的贫民窟里，先看见一个个具体的人。",
+    figureBio:"刘备（161—223年），字玄德，三国蜀汉开国皇帝。他早年颠沛流离、屡战屡败，却始终以宽厚待人、以信义立身，桃园三结义与关羽、张飞情同手足，三顾茅庐请出诸葛亮，最终在群雄逐鹿中占得一席之地，成就帝业。他不是最强的那一个，却是最能让身边人心甘情愿追随的那一个。特蕾莎修女（Mother Teresa，1910—1997），生于阿尔巴尼亚，长期在印度加尔各答为贫病者服务，创办「仁爱传教会」，1979年获诺贝尔和平奖，一生以「先看见人」的信念照顾最被遗忘的人。" },
+  { key:"独行清醒者", emoji:"🌙", oneline:"热闹是别人的，清醒是你的",
+    cond:r=>(r.E<=1&&r.N<=1),
+    desc:"你不抢着牵头，也不容易被情绪卷走。你在角落里把最该做的事做掉，然后一个人把整件事想明白。",
+    quote:"「我不争那个位置，但该做的，我做了。」",
+    figure:"陶渊明", figureWorld:"梭罗",
+    figureNote:"陶渊明「不为五斗米折腰」，转身归隐田园；梭罗独自住进瓦尔登湖畔的林子，只为「把生活活得深刻」。清醒的人，往往安静。",
+    figureBio:"陶渊明（约365—427年），字元亮，东晋诗人，中国田园诗鼻祖。曾任彭泽县令，因不愿「为五斗米折腰」辞官归隐，此后躬耕自资、饮酒赋诗，写下《归去来兮辞》《桃花源记》等千古名篇，把清贫日子过成了精神的富足。亨利·戴维·梭罗（Henry David Thoreau，1817—1862），美国作家、哲学家，1845年在瓦尔登湖畔自建木屋独居两年，后写成《瓦尔登湖》，倡导简朴、自省与亲近自然，其「公民不服从」思想影响了后世许多人。" },
+  { key:"敏感雷达", emoji:"📡", oneline:"你比别人多接收了三十倍的信号",
+    cond:r=>(r.N>=4),
+    desc:"你从不会'没注意到'。风声、对视、没说出口的话，全进了你的系统。这份敏感让你累，也让你成为最早察觉危险的人。",
+    quote:"「我早觉得不对劲——只是没人问。」",
+    figure:"杜甫", figureWorld:"梵高",
+    figureNote:"杜甫把整个时代的苦难都接进了自己的诗里，被称作「诗圣」；梵高用一生接收着别人看不到的色彩与情绪。敏感是天赋，也是重量。",
+    figureBio:"杜甫（712—770年），字子美，唐代伟大的现实主义诗人，被尊为「诗圣」。他亲历安史之乱，一生颠沛流离，却始终以诗笔记录时代的苦难与百姓的疾苦，《春望》《三吏》《三别》《茅屋为秋风所破歌》等作品沉郁顿挫、情系苍生，其诗被称为「诗史」。文森特·梵高（Vincent van Gogh，1853—1890），荷兰后印象派画家，一生饱受贫困与精神折磨，却以浓烈的色彩与笔触表达出常人难以察觉的情感深度，《星月夜》《向日葵》等在他身后成为人类艺术史上最动人的作品。" },
+  { key:"平衡者", emoji:"⚖️", oneline:"你总在找第三条路",
+    cond:()=>true,
+    desc:"你既不冲锋也不退守，你擅长在'效率'和'人情'、'冒险'和'稳妥'之间，找出那个别人没看见的落点。",
+    quote:"「不一定非 A 即 B，我再想想有没有第三种分法。」",
+    figure:"苏轼", figureWorld:"富兰克林",
+    figureNote:"苏轼一生起落，却在「入世」与「旷达」间找到了自己的第三条路，写下「一蓑烟雨任平生」；富兰克林既是科学家又是政治家，样样都不走极端。会变通的人，走得最远。",
+    figureBio:"苏轼（1037—1101年），字子瞻，号东坡居士，北宋文学家、书画家，「唐宋八大家」之一。他一生屡遭贬谪，从黄州到惠州再到儋州，越贬越远，却始终把起伏活成了旷达——写下《赤壁赋》《念奴娇·赤壁怀古》《定风波》等名篇，「一蓑烟雨任平生」正是他人生态度的写照，诗文书画无一不精。本杰明·富兰克林（Benjamin Franklin，1706—1790），美国开国元勋之一，既是科学家（风筝引电、避雷针），又是政治家、作家、外交家，参与起草《独立宣言》，一生横跨多个领域却从不走极端，是「通才」的典范。" },
+];
+
+const OCEAN_LABEL = {O:"开放性",C:"尽责性",E:"外向性",A:"宜人性",N:"神经质"};
+
+// ==== 独一无二的人物映射 ====
+// 每个 OCEAN 家族下挂一组具体历史人物；作答指纹（8 题各自选了 A/B/C 的序列）经哈希
+// 决定到底落在哪一位。只要有一题选得不一样，命格编号/契合度就不同、落点人物也可能不同——
+// 让"每一组选项组合对应用户心里的那个独一无二的人"成立。
+const FIGURE_POOL = {
+  "探路者":[
+    {figure:"张骞",figureWorld:"麦哲伦",note:"西汉的张骞两次出使西域，走了十三年，第一次把中原之外的世界带回长安；麦哲伦用一生兑现「地球是圆的」——敢为未知押上全部的人，历史总会记住。",bio:"张骞（？—前114年），西汉外交家，公元前138年奉汉武帝之命出使西域，被匈奴扣留十年仍持汉节不失，史称「凿空」，为丝绸之路奠定基础。麦哲伦（1480—1521），葡萄牙航海家，1519年率船队出发，其船队最终完成人类首次环球航行。"},
+    {figure:"玄奘",figureWorld:"哥伦布",note:"玄奘一个人走出玉门关，十七年、五万里取回真经；哥伦布顶着「地球是平的」的嘲笑向西航行，撞见了新大陆。信念比地图更远。",bio:"玄奘（602—664年），唐代高僧，贞观年间西行求法，历经艰险抵达印度那烂陀寺，十九年后携经论回到长安，译经弘法，被尊为「三藏法师」，其《大唐西域记》是研究古代中亚、南亚的珍贵文献。哥伦布（1451—1506），意大利航海家，1492年在西班牙王室资助下横渡大西洋，抵达美洲，开启了地理大发现的时代。"},
+    {figure:"郑和",figureWorld:"阿蒙森",note:"郑和七下西洋，比哥伦布早半个世纪，船队如移动城池；阿蒙森第一个走到南极点。真正的探路者，是把「没人去过」变成「有人到过」。",bio:"郑和（1371—1433），明代航海家，1405至1433年间七次率庞大船队下西洋，远达非洲东岸与红海，比欧洲大航海早半个多世纪，是世界航海史上的壮举。罗尔德·阿蒙森（Roald Amundsen，1872—1928），挪威极地探险家，1911年率先抵达南极点，是南极征服第一人。"},
+    {figure:"徐霞客",figureWorld:"伊本·白图泰",note:"徐霞客用三十年把双脚走成一部《游记》；伊本·白图泰二十九年行了十二万公里。他们探的不是疆土，是「世界到底长什么样」。",bio:"徐霞客（1587—1641），明代地理学家、旅行家，三十余年间游历大半个中国，考察山川地貌，留下《徐霞客游记》，是世界上最早对喀斯特地貌作系统考察的著作。伊本·白图泰（1304—1369），摩洛哥旅行家，二十九年间行程逾十二万公里，足迹遍及亚非欧，其《游记》是中世纪世界最珍贵的见闻录之一。"},
+    {figure:"班超",figureWorld:"詹姆斯·库克",note:"班超投笔从戎，凭数十人纵横西域三十一年；库克船长三下太平洋，把地图上的空白一笔笔填上。他们证明：路是人走出来的。",bio:"班超（32—102），东汉外交家、军事家，早年代笔为生，后「投笔从戎」，率少量部众出使并经营西域三十一年，重新打通并稳住了丝绸之路南道，官至西域都护，封定远侯。詹姆斯·库克（James Cook，1728—1779），英国航海家，三次远航太平洋，测绘新西兰与澳大利亚东岸，首次抵达南极圈，极大拓展了人类的世界地图。"},
+    {figure:"法显",figureWorld:"弗里乔夫·南森",note:"法显比玄奘早两百年独自西行求法，六十多岁还漂洋过海；南森驾船随浮冰漂向北极，又为难民奔走。探路者心里，总装着别人。",bio:"法显（约337—约422），东晋高僧，年近六十从长安西行求法，陆去海归，遍访三十余国，携回大量戒律经典，著《佛国记》，是中国第一位到海外取经求法并留下完整记录的大师。弗里乔夫·南森（Fridtjof Nansen，1861—1930），挪威探险家，曾滑雪横穿格陵兰、乘「弗拉姆」号随浮冰漂近北极点，晚年投身国际难民救助，获1922年诺贝尔和平奖。"},
+    {figure:"沈括",figureWorld:"洪堡",note:"沈括上知天文下知地理，一部《梦溪笔谈》包罗万象；洪堡走遍美洲，用测量和观察重塑了现代地理学。他们探的是知识本身的边界。",bio:"沈括（1031—1095），北宋科学家、政治家，博学多才，天文、历法、数学、物理、地质、医药无不涉猎，晚年著《梦溪笔谈》，是中国科学史上的里程碑著作。亚历山大·冯·洪堡（Alexander von Humboldt，1769—1859），德国博物学家、地理学家，历时五年考察中南美洲，创立近代自然地理学与宇宙（Cosmos）的整体观，被誉为现代地理学之父。"},
+  ],
+  "压舱石":[
+    {figure:"诸葛亮",figureWorld:"乔治·华盛顿",note:"诸葛亮「鞠躬尽瘁」，事无巨细皆亲手料理，撑起一整个蜀汉；华盛顿在最该抓住权力的时刻选择交出它——真正稳的人，从不靠戏剧性取胜。",bio:"诸葛亮（181—234年），字孔明，三国蜀汉丞相，刘备去世后受托孤之重，事无巨细亲力亲为，五次北伐，「鞠躬尽瘁，死而后已」，成为东方智慧与忠诚的化身。华盛顿（1732—1799），美国首任总统，独立战争大陆军总司令，两届任期届满后主动退位交权，确立和平移交权力传统，被尊为「美国国父」。"},
+    {figure:"萧何",figureWorld:"马歇尔",note:"刘邦在前线打仗，萧何在后方把粮草、法令、户口一寸寸稳住；马歇尔在二战里没上前线，却用一整套调度撑起美军。最稳的人往往不在聚光灯下。",bio:"萧何（？—前193年），西汉开国功臣、丞相，楚汉之争中镇守关中，保障后勤、制定律令、收存图籍，为刘邦赢得天下立下不世之功，位列「汉初三杰」。乔治·马歇尔（1880—1959），美国五星上将，二战期间陆军参谋长，统筹全局调度，战后提出「马歇尔计划」，获诺贝尔和平奖。"},
+    {figure:"曾国藩",figureWorld:"丘吉尔",note:"曾国藩靠「结硬寨、打呆仗」一步步熬出来；丘吉尔在最黑暗的时刻用一句「我没什么可奉献的，唯有热血、辛劳、眼泪与汗水」稳住一个民族。稳，是长期主义者的天分。",bio:"曾国藩（1811—1872），晚清名臣，以「屡败屡战」「结硬寨、打呆仗」的稳健作风组建湘军平定太平天国，修身律己、家教传家，其《曾国藩家书》影响深远。丘吉尔（1874—1965），英国首相，二战中领导英国抵抗纳粹，以坚定的意志与演说凝聚全国，是20世纪最重要的政治领袖之一。"},
+    {figure:"狄仁杰",figureWorld:"俾斯麦",note:"狄仁杰在乱局里断案如神、力挽狂澜又稳住大局；俾斯麦用「铁与血」之外的冷静手腕把散沙捏成帝国。真正的定海神针，越是喧嚣越不发声。",bio:"狄仁杰（630—700年），唐代名臣，两度拜相，为官清正、断案如流，在武周复杂的政局中既匡正朝纲又保全大局，被后世誉为「唐室砥柱」。俾斯麦（1815—1898），普鲁士首相、「铁血宰相」，以高超的现实政治手腕先后打赢三场王朝战争，完成德意志统一，塑造了近代欧洲格局。"},
+    {figure:"房玄龄",figureWorld:"艾森豪威尔",note:"房玄龄「房谋杜断」，二十年在幕后把大唐的政局一寸寸理顺；艾森豪威尔既能指挥诺曼底登陆，又能在两党之间调和大局。压舱石从不抢戏，却让整台戏转得下去。",bio:"房玄龄（579—648），唐初名相，与杜如晦并称「房谋杜断」，任中书令、尚书左仆射二十余年，主持制定唐初律令制度、精简机构，为「贞观之治」奠定了行政根基。德怀特·艾森豪威尔（Dwight Eisenhower，1890—1969），二战欧洲盟军最高统帅，指挥诺曼底登陆，战后任美国第34任总统，以擅长协调各方、稳健持重著称。"},
+    {figure:"寇准",figureWorld:"阿登纳",note:"澶渊之役满朝南逃，寇准硬是把真宗「架」到前线稳住天下；阿登纳在废墟之上，把战败的西德一点点重新扶正。最险的时刻，压舱石站得最直。",bio:"寇准（961—1023），北宋名相，澶渊之役中力排众议、力主宋真宗亲征，稳定军心、促成澶渊之盟，为北宋换来百年和平，以刚正善断闻名。康拉德·阿登纳（Konrad Adenauer，1876—1967），战后西德首任总理，在战败国的废墟上推行稳健务实的重建与社会市场经济，带领西德重新融入西方、走向复兴。"},
+    {figure:"周亚夫",figureWorld:"马汉",note:"周亚夫细柳营治军如铁，一句「军中闻将军令」让文帝动容；马汉用一部《海权论》给一个国家的战略定了锚。压舱石靠的是可依赖的规则。",bio:"周亚夫（？—前143），西汉名将，绛侯周勃之子，驻军细柳营时军纪严整，汉文帝劳军亦须按军令行事，被誉为「真将军」；后平定七国之乱，三个月而定大局。阿尔弗雷德·马汉（Alfred Mahan，1840—1914），美国海军战略家，著《海权对历史的影响》，其理论深刻影响了近代各国海军与国家战略，是秩序与规则的定锚者。"},
+  ],
+  "黏合剂":[
+    {figure:"刘备",figureWorld:"特蕾莎修女",note:"刘备论才智不算顶尖，却让关羽、张飞、诸葛亮死心追随——他把「人」放在一切之前；特蕾莎修女在加尔各答的贫民窟里，先看见一个个具体的人。",bio:"刘备（161—223年），字玄德，三国蜀汉开国皇帝，屡战屡败却以宽厚信义立身，桃园三结义情同手足，三顾茅庐请出诸葛亮，是最能让身边人心甘情愿追随的那一个。特蕾莎修女（1910—1997），长期在印度加尔各答为贫病者服务，创办「仁爱传教会」，1979年获诺贝尔和平奖。"},
+    {figure:"孔子",figureWorld:"曼德拉",note:"孔子一生想把「仁」落地到每一个具体的人身上；曼德拉走出二十七年牢狱，第一件事是拥抱敌人、缝合一个国家。他们相信：把人连起来，比征服更有力量。",bio:"孔子（前551—前479），春秋思想家、教育家，儒家学派创始人，主张「仁者爱人」「己所不欲，勿施于人」，开创有教无类，被尊为「至圣先师」，其思想深刻塑造了东亚文明。纳尔逊·曼德拉（1918—2013），南非总统，因反对种族隔离入狱27年，出狱后推动种族和解，1993年获诺贝尔和平奖，被誉为「南非国父」。"},
+    {figure:"墨子",figureWorld:"林肯",note:"墨子奔走列国只为「兼爱」——不分亲疏地爱每一个人；林肯在分裂的国度里坚持「民有、民治、民享」。把陌生人当成同类，是他们共同的本能。",bio:"墨子（约前470—前391），战国思想家，墨家学派创始人，主张「兼爱」「非攻」，身体力行阻止战争、扶助弱小，是中国最早关注普通劳动者和平民的哲人之一。亚伯拉罕·林肯（1809—1865），美国第16任总统，领导南北战争维护联邦统一、废除奴隶制，发表《葛底斯堡演说》，以宽厚与远见著称。"},
+    {figure:"孟尝君",figureWorld:"南丁格尔",note:"孟尝君门下食客三千，鸡鸣狗盗皆能用其所长；南丁格尔提灯巡视伤兵营，把「照顾人」变成一门学问。看见每个人的用处与苦处，是黏合剂的超能力。",bio:"孟尝君（田文，生卒不详），战国四公子之一，广纳门客、不拘一格，凭借「鸡鸣狗盗」之徒脱险，以善聚人心、知人善任闻名于世。弗罗伦斯·南丁格尔（1820—1910），英国护士、统计学家，克里米亚战争中提灯护理伤兵，开创现代护理学，被尊为「提灯女神」。"},
+    {figure:"范仲淹",figureWorld:"甘地",note:"范仲淹「先天下之忧而忧」，设义庄养活一族数百口；甘地用非暴力把一整个民族拢到一起。黏合剂把「我」活成了「我们」。",bio:"范仲淹（989—1052），北宋政治家、文学家，主持「庆历新政」，创设义庄周济族人，《岳阳楼记》中「先天下之忧而忧，后天下之乐而乐」成为千古名句，一生以济世爱人为念。莫罕达斯·甘地（Mohandas Gandhi，1869—1948），印度独立运动领袖，以「非暴力不合作」凝聚亿万民众，最终推动印度独立，被尊为「圣雄」。"},
+    {figure:"信陵君",figureWorld:"马丁·路德·金",note:"信陵君窃符救赵，为情谊敢赌上一切；马丁·路德·金用一句「我有一个梦想」把千万人连成一体。他们让陌生人相信：我们是一伙的。",bio:"魏无忌（？—前243），战国四公子之一的信陵君，礼贤下士、门客三千，为救赵国不惜窃符夺兵、击退秦军，以义气和凝聚力名垂青史。马丁·路德·金（Martin Luther King Jr.，1929—1968），美国民权运动领袖，以非暴力抗争推动种族平等，《我有一个梦想》的演讲震动世界，1964年获诺贝尔和平奖。"},
+    {figure:"张謇",figureWorld:"朱莉娅·沃德·豪",note:"张謇中了状元却去办厂办学，让一城百姓有了活路；有些黏合剂不站在聚光灯下，只是一砖一瓦地，把一群人的日子搭起来。",bio:"张謇（1853—1926），清末状元、近代实业家与教育家，弃官回乡创办大生纱厂等实业，并兴办学校、图书馆、博物苑等公益事业，把南通建成了近代「模范县」，是「实业救国」「教育救国」的践行者。"},
+  ],
+  "独行清醒者":[
+    {figure:"陶渊明",figureWorld:"梭罗",note:"陶渊明「不为五斗米折腰」，转身归隐田园；梭罗独自住进瓦尔登湖畔的林子，只为「把生活活得深刻」。清醒的人，往往安静。",bio:"陶渊明（约365—427年），东晋诗人，中国田园诗鼻祖，因不愿「为五斗米折腰」辞官归隐，写下《归去来兮辞》《桃花源记》，把清贫日子过成精神富足。梭罗（1817—1862），美国作家、哲学家，1845年在瓦尔登湖畔独居两年，写成《瓦尔登湖》，倡导简朴自省。"},
+    {figure:"王维",figureWorld:"康德",note:"王维「行到水穷处，坐看云起时」，在热闹的盛唐里活成一个安静的旁观者；康德一生没离开哥尼斯堡，却在独处中颠覆了整个哲学。清醒不需要观众。",bio:"王维（701—761），唐代诗人、画家，字摩诘，山水田园诗大家，诗中有画、画中有诗，晚年半官半隐，于辋川别业写下《山居秋暝》等空灵之作，被誉为「诗佛」。伊曼努尔·康德（1724—1804），德国哲学家，一生近乎足不出乡，却在《纯粹理性批判》等著作中完成哲学的「哥白尼式革命」，是启蒙时代最重要的思想家之一。"},
+    {figure:"庄周",figureWorld:"蒙田",note:"庄周梦见自己是蝴蝶，笑着问「到底谁是谁」；蒙田躲进塔楼的书房，用一篇篇《随笔》审视自己。他们都在人群之外，把世界和自己看了个透。",bio:"庄周（约前369—前286），战国道家代表人物，《庄子》一书汪洋恣肆，以「庄周梦蝶」「逍遥游」等寓言追问万物本质，追求精神的绝对自由，与老子并称「老庄」。米歇尔·德·蒙田（1533—1592），法国思想家，《随笔集》的作者，最早以「我自己」为题材进行内省式写作，开创了随笔这一文体。"},
+    {figure:"严子陵",figureWorld:"第欧根尼",note:"严子陵是光武帝的同学，却宁愿在富春江钓鱼也不入朝堂；第欧根尼住在木桶里，对亚历山大大帝只说「别挡住我的阳光」。清醒者的骨头，谁也弯不动。",bio:"严子陵（生卒不详），东汉隐士，与光武帝刘秀是同窗好友，刘秀称帝后屡请其出仕，他坚辞不受，隐居富春江畔垂钓终老，成为后世高洁不仕的象征。第欧根尼（约前412—前323），古希腊犬儒派哲人，主张摒弃世俗欲望、回归自然，传说住在一只木桶里，曾让亚历山大大帝「别挡住我的阳光」。"},
+    {figure:"嵇康",figureWorld:"尼采",note:"嵇康在柳树下打铁，懒得理权贵，临刑一曲《广陵散》成绝响；尼采一个人喊出「上帝死了」，独自承受时代的眩晕。清醒，有时是要付代价的。",bio:"嵇康（223—262），三国魏末思想家、文学家，「竹林七贤」的精神领袖，崇尚自然、蔑视礼教，善抚琴，《广陵散》一曲传为绝响，终因不与司马氏合作而被杀。弗里德里希·尼采（Friedrich Nietzsche，1844—1900），德国哲学家，以「上帝已死」「超人」「重估一切价值」等思想震撼后世，一生孤独行吟，是近代最具冲击力的思想者之一。"},
+    {figure:"林逋",figureWorld:"卢梭",note:"林逋隐居西湖孤山，梅妻鹤子，一生不入城市；卢梭独来独往，晚年写下《孤独漫步者的遐想》。他们把独处过成了一种圆满。",bio:"林逋（967—1028），北宋隐逸诗人，结庐杭州西湖孤山，终身不仕不娶，种梅养鹤，世称「梅妻鹤子」，其「疏影横斜水清浅，暗香浮动月黄昏」咏梅诗千古传诵。让-雅克·卢梭（Jean-Jacques Rousseau，1712—1778），法国启蒙思想家，一生敏感孤僻、与时代格格不入，晚年《孤独漫步者的遐想》是自我独白的经典。"},
+    {figure:"朱耷",figureWorld:"叔本华",note:"朱耷国破后出家为僧，笔下鱼鸟皆翻着白眼；叔本华一生孤高，把人生的真相看得太清。清醒者不说破，只是把冷眼藏进了作品。",bio:"朱耷（约1626—约1705），明宗室后裔，明亡后出家为僧，号八大山人，其水墨写意花鸟冷逸孤傲，笔下鱼鸟常作「白眼向人」之态，是中国写意画的巅峰人物。亚瑟·叔本华（Arthur Schopenhauer，1788—1860），德国哲学家，以《作为意志和表象的世界》著称，思想孤高悲观，一生离群索居，却深刻影响后世哲学与艺术。"},
+  ],
+  "敏感雷达":[
+    {figure:"杜甫",figureWorld:"梵高",note:"杜甫把整个时代的苦难都接进了自己的诗里，被称作「诗圣」；梵高用一生接收着别人看不到的色彩与情绪。敏感是天赋，也是重量。",bio:"杜甫（712—770年），唐代伟大的现实主义诗人，被尊为「诗圣」，亲历安史之乱，一生颠沛流离，以诗笔记录时代苦难，《春望》《三吏》《三别》等被称为「诗史」。文森特·梵高（1853—1890），荷兰后印象派画家，一生饱受贫困与精神折磨，《星月夜》《向日葵》在他身后成为人类艺术史上最动人的作品。"},
+    {figure:"李清照",figureWorld:"卡夫卡",note:"李清照把「才下眉头，却上心头」的细微波澜都写进了词里；卡夫卡把现代人隐秘的焦虑与孤独放大到刺眼。他们替所有人都感受了太多。",bio:"李清照（1084—约1155），宋代杰出女词人，婉约派代表，早年生活优裕、后期饱经离乱，词作细腻真挚，「寻寻觅觅，冷冷清清」写尽家国之痛，被誉为「千古第一才女」。弗兰茨·卡夫卡（1883—1924），奥地利作家，《变形记》《审判》的作者，以荒诞冷峻的笔触揭示现代人的异化与焦虑，是20世纪文学的先驱。"},
+    {figure:"纳兰性德",figureWorld:"普鲁斯特",note:"纳兰性德「人生若只如初见」，把每一段深情都刻成怅惘；普鲁斯特在一块玛德琳蛋糕的味道里追回整个人生。他们把感受力用到了极致，也因此格外易碎。",bio:"纳兰性德（1655—1685），清代词人，大学士明珠之子，词风清丽婉约、哀感顽艳，「人生若只如初见，何事秋风悲画扇」传诵至今，被誉为「清初第一词人」，年仅三十而逝。马塞尔·普鲁斯特（1871—1922），法国作家，长篇巨著《追忆似水年华》以极为细腻的感知追索时间与记忆，是意识流文学的里程碑。"},
+    {figure:"屈原",figureWorld:"艾米莉·狄金森",note:"屈原「举世皆浊我独清」，把满腹忧愤化作《离骚》；狄金森隐居一室，用近两千首诗剖开最幽微的内心。敏感的人，往往最早看见真相，也承受最多。",bio:"屈原（约前340—前278），战国楚国诗人、政治家，中国浪漫主义文学的奠基人，《离骚》《九歌》开「楚辞」一体，忧国忧民，最终投汨罗江以身殉志，后世以端午节纪念他。艾米莉·狄金森（1830—1886），美国诗人，一生近乎隐居，写下近1800首诗，以独特、凝练又敏锐的笔触探讨死亡、自然与永恒，被视为美国诗歌的先驱。"},
+    {figure:"李商隐",figureWorld:"陀思妥耶夫斯基",note:"李商隐把最幽微难言的情思都藏进《锦瑟》；陀思妥耶夫斯基把人性的每一道裂缝都探索到底。敏感雷达能听见别人心里最轻的那声叹息。",bio:"李商隐（约813—约858），晚唐诗人，与杜牧并称「小李杜」，其无题诗深情绵邈、朦胧多义，「春蚕到死丝方尽」「此情可待成追忆」等句写尽了难言的心事。费奥多尔·陀思妥耶夫斯基（Fyodor Dostoevsky，1821—1881），俄国作家，《罪与罚》《卡拉马佐夫兄弟》的作者，以对人心理深渊的极致描摹，被誉为心理小说的巨匠。"},
+    {figure:"李煜",figureWorld:"拜伦",note:"李煜亡国之后，把一腔亡国之痛写成「一江春水向东流」；拜伦把炽烈又痛苦的心，燃烧成一行行诗。敏感者的痛，常常酿成了最动人的美。",bio:"李煜（937—978），南唐后主，世称「李后主」，治国虽短，词作却冠绝千古，「问君能有几多愁，恰似一江春水向东流」等句把亡国之痛写得沉痛动人，被誉为「千古词帝」。乔治·戈登·拜伦（Lord Byron，1788—1824），英国浪漫主义诗人，一生热情炽烈又忧郁漂泊，《恰尔德·哈罗尔德游记》《唐璜》尽显敏感灵魂的燃烧与痛苦。"},
+    {figure:"李贺",figureWorld:"雪莱",note:"李贺人称「诗鬼」，笔下意象奇崛幽冷；雪莱敏感得几乎透明，把理想与哀愁都交给了西风。他们替世界多感受了一层，因此格外易碎。",bio:"李贺（790—816），中唐诗人，字长吉，诗风奇崛冷艳、想象诡谲，善用神话与幽冥意象，被后世称为「诗鬼」，「黑云压城城欲摧」等句脍炙人口，年仅二十七而逝。珀西·比希·雪莱（Percy Bysshe Shelley，1792—1822），英国浪漫主义诗人，《西风颂》《致云雀》等作品敏感炽烈、想象丰沛，被誉为「诗人中的诗人」，三十岁溺亡于海上。"},
+  ],
+  "平衡者":[
+    {figure:"苏轼",figureWorld:"富兰克林",note:"苏轼一生起落，却在「入世」与「旷达」间找到了第三条路，写下「一蓑烟雨任平生」；富兰克林既是科学家又是政治家，样样都不走极端。会变通的人，走得最远。",bio:"苏轼（1037—1101），字东坡，北宋文学家，「唐宋八大家」之一，一生屡遭贬谪却始终旷达，写下《赤壁赋》《念奴娇·赤壁怀古》《定风波》等名篇，诗文书画无一不精。本杰明·富兰克林（1706—1790），美国开国元勋，科学家、政治家、作家于一身，参与起草《独立宣言》，是「通才」的典范。"},
+    {figure:"范蠡",figureWorld:"达·芬奇",note:"范蠡既能助越灭吴、又能功成身退去经商成「陶朱公」，进退皆是高手；达·芬奇横跨艺术与科学，样样精通却从不偏执一端。平衡者总在找那个最优解。",bio:"范蠡（生卒不详），春秋末期政治家、思想家、商人，辅佐越王勾践灭吴复国后急流勇退，弃官经商，三致千金，被尊为「商圣」「陶朱公」，进退之间尽显通达。列奥纳多·达·芬奇（1452—1519），意大利文艺复兴巨匠，集画家、科学家、发明家于一身，《蒙娜丽莎》的作者，以跨学科的通才视野著称。"},
+    {figure:"谢安",figureWorld:"歌德",note:"谢安在淝水之战前还能与人下棋谈笑，赢了仗也不居功；歌德一生在诗人、政客、科学家之间从容切换。真正的平衡者，泰山崩于前而面色不改。",bio:"谢安（320—385），东晋名士、政治家，淝水之战时坐镇建康、指挥若定，前线捷报传来仍不动声色继续下棋，「小儿辈大破贼」的从容成为千古佳话，是魏晋风度的代表。约翰·沃尔夫冈·冯·歌德（1749—1832），德国文学家、思想家，《浮士德》《少年维特之烦恼》的作者，兼具诗人、剧作家、自然科学家多重身份，是近代西方最具综合视野的巨人之一。"},
+    {figure:"白居易",figureWorld:"塞万提斯",note:"白居易既写「长恨歌」的深情，也做「新乐府」的济世，仕隐两头都自洽；塞万提斯当过兵、做过官、蹲过牢，最后用《堂吉诃德》笑看世间理想与现实。平衡者懂幽默，也懂分寸。",bio:"白居易（772—846），唐代诗人，字乐天，主张「文章合为时而著，歌诗合为事而作」，《长恨歌》《琵琶行》脍炙人口，为官体恤民情、诗风平易，是唐代存诗最多的大家之一。米格尔·德·塞万提斯（1547—1616），西班牙作家，一生历经战阵、被俘、入狱等坎坷，晚年写下《堂吉诃德》，被誉为第一部现代小说，讽刺与悲悯并存。"},
+    {figure:"王阳明",figureWorld:"伏尔泰",note:"王阳明既能平叛立功，又能讲学悟道，把「知行合一」活成一体；伏尔泰入世时锋芒毕露，退隐时清醒从容。平衡者能在做事与做自己之间自由切换。",bio:"王守仁（1472—1529），号阳明，明代思想家、军事家，心学集大成者，提出「心即理」「知行合一」「致良知」，曾以文臣之身平定宁王之乱，事功与学问并重，影响远播东亚。伏尔泰（Voltaire，1694—1778），法国启蒙思想家、文学家，既激烈介入现实批判专制与教会，又能在退隐中保持清醒与机智，是启蒙时代的灵魂人物。"},
+    {figure:"张居正",figureWorld:"塔列朗",note:"张居正大刀阔斧推行改革，却深谙进退权衡之术；塔列朗在法国数次政权更迭中始终全身而退。平衡者不是没有立场，而是懂得在什么位置使劲。",bio:"张居正（1525—1582），明代政治家，万历朝内阁首辅，推行「一条鞭法」、考成法等改革，整顿吏治、清丈田亩，使明朝一度中兴，是善于在复杂政局中权衡推进的实干家。夏尔·莫里斯·德·塔列朗（Talleyrand，1754—1838），法国外交家，历经大革命、拿破仑、波旁复辟等数个政权而始终居于权力核心，以超凡的平衡手腕著称。"},
+    {figure:"纪晓岚",figureWorld:"伊拉斯谟",note:"纪晓岚既能做官侍君，又能主编《四库全书》纵览群籍，圆通而不失本心；伊拉斯谟在宗教纷争的乱世里，始终守住人文与中庸。平衡者是最难被风暴掀翻的那类人。",bio:"纪昀（1724—1805），字晓岚，清代学者、文学家，官至礼部尚书，任《四库全书》总纂官，主持编修这部中国最大的丛书，著《阅微草堂笔记》，为人圆通诙谐又学问渊博。德西德里乌斯·伊拉斯谟（Erasmus，1466—1536），尼德兰人文主义者，在宗教改革的风暴中坚持独立与中庸，著《愚人颂》，被誉为「人文主义之王」。"},
+  ],
+};
+
+// 简单字符串哈希（FNV-1a），保证同一指纹始终落到同一人物
+function hashStr(s){ let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return h>>>0; }
+// 依据家族 + 作答指纹，确定性地选出唯一人物 + 专属命格编号 + 契合度
+function pickFigure(familyKey, signature){
+  const pool=FIGURE_POOL[familyKey] || FIGURE_POOL["平衡者"];
+  const h=hashStr(familyKey+"|"+signature);
+  const person=pool[h % pool.length];
+  const match=80 + (h % 20);            // 80–99 的唯一契合度
+  const seq=(h % 9000 + 1000);          // 4 位命格编号
+  return { person, match, code:String(seq), poolSize:pool.length, h };
+}
+
+// ==== 命格生成器：让每一组作答轨迹都落到一个独一无二的命格 ====
+// 轻量版 8 题 × 每题 3 选项 = 3^8 = 6561 种轨迹。
+// 8 位轨迹两两一组（共 4 组），每组 3^2 = 9 种，从 4 个各 9 词的词库各取一字，
+// 9^4 = 6561 种命格名，与轨迹一一对应——零重复。
+const DESTINY = {
+  A:["星","朔","岚","川","烬","霜","墟","曦","溟"],   // 天象·背景
+  B:["渡","狩","燃","泊","问","栖","逐","守","驰"],   // 行动·意象
+  C:["澄","烈","孤","阔","静","锐","温","旷","明"],   // 心性·底色
+  D:["客","者","人","士","君","翁","子","生","侠"],   // 身份·称谓
+};
+// 命格释义素材：每个字附一层解读，拼成一段独一无二的"命格释义"
+const DESTINY_MEAN = {
+  A:["在无人处抬头看天","于风起前先闻到气","心里始终留着一片旷野","顺流也逆流，都不慌","灰烬里也认得出火星","越冷越清醒","在废墟上搭自己的棚","总在别人睡着时醒来","把最深的事藏在最静处"],
+  B:["遇事先迈出那一步","该出手时绝不犹豫","把冷下去的东西重新点着","懂得在哪里停下来等","对未知保持着追问","给自己留一棵树的时间","认定了就一路追下去","守该守的，不动如山","想清楚就全力以赴"],
+  C:["心思像水一样透亮","内里烧着一团不熄的火","习惯一个人消化一切","格局大，不困于小事","表面平静，底下有暗流","看人看事一针见血","对世界始终留着温柔","不被眼前的得失困住","把复杂的事想得明白"],
+  D:["是个独行但不孤单的人","是靠得住的同路人","是让人安心待着的存在","是有风骨的那一个","是愿意担事的主心骨","是把日子过成了哲学的人","是心里有少年气的人","是永远在生长的人","是出手护人的那一位"],
+};
+const TRAIT_WORD = {
+  O:["对未知永远好奇","想象力没有边界","能在旧事物里看见新可能"],
+  C:["做事有始有终","靠得住到让人安心","把秩序当成一种温柔"],
+  E:["走到哪里都能点亮气氛","天生会把人聚起来","越热闹越来劲"],
+  A:["总先替别人想一层","把人放在事情前面","相信善意会传染"],
+  N:["比别人多接收一整个世界","对微妙的变化极敏感","情绪是你的雷达"],
+};
+// ==== 稀有度：依据人格科学 unusualness 框架（罕见取值 + 罕见组合）====
+// 非标准化量表的产品化映射：满分按版本估算，极值=50%满分，统计极值=75%满分
+function computeRarity(score, mode, sig){
+  // 科学依据：unusualness 框架（罕见取值 + 罕见组合）；阈值取心理测量常用的 ±0.5 SD / ±1 SD。
+  // 随机作答下每维得分近似均值 0，题数 n≈轻量 8/5、深度 12/5，单题贡献 0/1/2（每特质独立计分），SD≈√(n·2/3)
+  // 基准：随机作答下每特质 dose 均匀，轻量2题/深度3题，{均值, SD}
+  const BASE = (mode==='deep')
+    ? {O:[4.49,1.68], C:[5.11,1.71], E:[2.80,1.46], A:[2.70,2.17], N:[1.50,2.47]}
+    : {O:[3.00,1.37], C:[3.40,1.40], E:[1.87,1.20], A:[1.80,1.77], N:[1.00,2.02]};
+  const extremeK=[], statK=[];
+  for(const k in score){
+    const z = ((score[k]||0) - BASE[k][0]) / BASE[k][1];   // 带方向：正=高于人群均值
+    if(Math.abs(z) >= 0.5) extremeK.push(k);
+    if(Math.abs(z) >= 1) statK.push(k);
+  }
+  // 组合反常：O/C 反向、E/A 反向、或 N 与 O 同高
+  const sgn = k => (score[k]||0);
+  const big = k => extremeK.includes(k);
+  const dev = k => (score[k]||0) - BASE[k][0];   // 相对人群均值的方向
+  const unusualCombo =
+    (dev('O')*dev('C') < 0 && big('O') && big('C')) ||   // 开放/尽责反向
+    (dev('E')*dev('A') < 0 && big('E') && big('A')) ||   // 外向/宜人反向
+    (dev('N')>0 && dev('O')>0 && big('N') && big('O'));  // 高神经质+高开放（敏感型）
+  // 同一轨迹必得同一档；极值/反常组合会把档位往稀有方向推
+  let h = hashStr((sig||'X')+'#rarity');
+  const u = ((h>>>0) % 100000) / 100000;            // 0~1 均匀分布
+  // 题量小（轻量每特质2题、深度3题），SD 切分区分力弱；档位以轨迹均匀打底，
+  // 仅当出现统计极值维或罕见组合时往稀有方向平移（unusualness 框架）。
+  const p = (statK.length>=2 || unusualCombo) ? (u < 0.5 ? u*0.6 : u) : (statK.length===1 ? Math.min(u, 0.60) : u);
+  let tier, note;
+  if(p < 0.05){ tier='SSR'; note='取值罕见 + 组合反常——你的特质结构不太容易在人群里撞见。'; }
+  else if(p < 0.25){ tier='SR'; note='多个维度同时拉开，画像少见于多数人。'; }
+  else if(p < 0.65){ tier='R'; note='在某一维上相当鲜明，其余维居中。'; }
+  else { tier='N'; note='各维都落在人群中心附近——稳稳的多数，也最可靠。'; }
+  const LABEL={N:"N · 常见",R:"R · 少见",SR:"SR · 稀有",SSR:"SSR · 极罕"};
+  return {tier, label:LABEL[tier], note, extremeK, statK, unusualCombo};
+}
+function genDestiny(sig, family, score){
+  const s=(sig||"X").slice(0,8).split("").map(ch=>"ABC".indexOf(ch)<0?0:"ABC".indexOf(ch));
+  while(s.length<8) s.push(0);
+  const gi=(a,b)=>s[a]*3+s[b];                 // 两位轨迹 → 0..8
+  const name = DESTINY.A[gi(0,1)] + DESTINY.B[gi(2,3)] + DESTINY.C[gi(4,5)] + DESTINY.D[gi(6,7)];
+  const mean = DESTINY_MEAN.A[gi(0,1)] + "，" + DESTINY_MEAN.B[gi(2,3)] + "；" +
+               DESTINY_MEAN.C[gi(4,5)] + "——你是" + DESTINY_MEAN.D[gi(6,7)] + "。";
+  // 最高维度决定一句特质点评（并列时按 O C E A N 顺序）
+  const order=["O","C","E","A","N"];
+  let top="O"; order.forEach(k=>{ if((score[k]||0)>(score[top]||0)) top=k; });
+  const tw = TRAIT_WORD[top][ hashStr(sig+top) % TRAIT_WORD[top].length ];
+  const desc = `「${name}」——${mean}你最鲜明的一面是：${tw}。六千五百六十一种人生里，你选中了这一格。换一个回答，就是另一个你。`;
+  return { name, desc, top };
+}
+
+// 两个类型之间的"历史人物关系"解读（键用小序号排序后拼接）
+const RELATION = {
+  "探路者-压舱石":{rel:"先锋与后援", chemistry:"一个敢冲、一个能守，天然的黄金搭档。张骞在前面探路，总得有诸葛亮在后方把粮草和秩序稳住。你们互补到几乎不需要磨合。", score:92},
+  "探路者-黏合剂":{rel:"彼此成全", chemistry:"探路者带回新世界，黏合剂把队伍拢在一起。张骞若没有刘备那样的凝聚力，走再远也留不下人。你们一个是方向，一个是归属感。", score:85},
+  "探路者-独行清醒者":{rel:"同向不同路", chemistry:"都想往前走，但一个成群结队、一个独自上路。能互相欣赏，却很难同行太久——各自都有非走不可的那条道。", score:68},
+  "探路者-敏感雷达":{rel:"明与暗", chemistry:"一个只看前方、一个只察细节。探路者嫌敏感雷达想太多，敏感雷达觉得探路者太莽。相处需要一句：你能看到我看不到的，我敢去你不敢去的。", score:60},
+  "探路者-平衡者":{rel:"点火与掌舵", chemistry:"探路者负责把火烧起来，平衡者负责别让它烧过头。张骞式的闯劲配上苏轼式的通达，是又敢又稳的组合。", score:82},
+  "压舱石-黏合剂":{rel:"秩序与温度", chemistry:"压舱石搭骨架，黏合剂给血肉。诸葛亮管事、刘备管人，一个团队最理想的上下手。你们在一起，事情和人都不落空。", score:90},
+  "压舱石-独行清醒者":{rel:"静水深流", chemistry:"都不爱喧哗，都靠得住。你们相处不必说话太多，一个眼神就知道对方在想什么。稳得有点闷，但极耐久。", score:80},
+  "压舱石-敏感雷达":{rel:"刚与柔", chemistry:"压舱石用理性兜底，敏感雷达用直觉预警。华盛顿需要有人在他做决定前把隐忧说出口。你们是彼此的校准器，但要小心谁都不肯先示弱。", score:70},
+  "压舱石-平衡者":{rel:"自律与通达", chemistry:"都靠谱，只是一个靠纪律、一个靠弹性。诸葛亮遇上苏轼，一个拉紧、一个松绑，反而把节奏调得刚刚好。", score:84},
+  "黏合剂-独行清醒者":{rel:"连接与留白", chemistry:"黏合剂把人往里拉，独行清醒者需要空间。陶渊明受不了太多应酬，但会被刘备的真心打动。相处之道：别追问，但也别走远。", score:72},
+  "黏合剂-敏感雷达":{rel:"取暖的两人", chemistry:"都把「人」看得最重，都能接住对方的情绪。刘备与杜甫，一个给怀抱、一个懂疾苦。很暖，但也容易一起陷进情绪里出不来。", score:86},
+  "黏合剂-平衡者":{rel:"和气生财", chemistry:"都好相处，都不爱硬碰硬。刘备加苏轼，一群人里最不会起冲突的两个。缺点是遇到必须撕破脸的时刻，谁都不想当坏人。", score:83},
+  "独行清醒者-敏感雷达":{rel:"清醒的内伤", chemistry:"都内向、都敏感，一个用冷静武装、一个用情绪感知。陶渊明看得懂杜甫的痛，但未必接得住。你们懂彼此，却都习惯了一个人扛。", score:74},
+  "独行清醒者-平衡者":{rel:"各守一方", chemistry:"都清醒、都不张扬。独行清醒者择一事终老，平衡者处处留有余地。相安无事，但很难真正搅动对方的生活。", score:76},
+  "敏感雷达-平衡者":{rel:"敏感被托住", chemistry:"敏感雷达的世界太满，平衡者教会他「也可以不那么用力」。杜甫若遇上苏轼，或许能写出「一蓑烟雨任平生」。这是一种治愈型的组合。", score:80},
+};
+function relKey(a,b){ return [a,b].sort().join("-"); }
+function getRel(a,b){ return RELATION[relKey(a,b)]; }
+
+const Game = {
+  idx:0, score:{O:0,C:0,E:0,A:0,N:0},
+  el:{},
+  init(){
+    this.el.cover=document.getElementById('s-cover');
+    this.el.quiz=document.getElementById('s-quiz');
+    this.el.result=document.getElementById('s-result');
+    this.el.compare=document.getElementById('s-compare');
+    this.el.bfi=document.getElementById('s-bfi');
+    this.el.admin=document.getElementById('s-admin');
+    // 路由：#admin 直接进入隐藏后台
+    if(location.hash==='#admin'){ this.show('admin'); Admin.render(); }
+  },
+  show(name){ Object.values(this.el).forEach(s=>s.classList.add('hidden')); this.el[name].classList.remove('hidden'); window.scrollTo(0,0); },
+  start(mode){ this.idx=0; this.score={O:0,C:0,E:0,A:0,N:0}; this.sig=''; this.mode=mode||'lite'; this.round=buildRound(this.mode); this.show('quiz'); this.render(); },
+  render(){
+    const item=this.round[this.idx];
+    const q=item.q;
+    const sceneMeta=SCENES.find(s=>s.name===item.scene);
+    document.getElementById('bar').style.width=(this.idx/this.round.length*100)+'%';
+    document.getElementById('qnum').innerHTML=`第 ${this.idx+1} / ${this.round.length} 幕 · ${item.scene}${sceneMeta?'（'+sceneMeta.hint+'）':''}${item.deep?'<span class="depth-flag">深度题</span>':''}`;
+    document.getElementById('scene').textContent=q.scene;
+    const box=document.getElementById('opts'); box.innerHTML='';
+    const keys=['A','B','C'];
+    q.opts.forEach((op,i)=>{
+      const b=document.createElement('button');
+      b.className='opt';
+      b.innerHTML=`<b>${keys[i]}</b>${op.t}`;
+      b.onclick=()=>this.pick(op.o,i);
+      box.appendChild(b);
+    });
+  },
+  prev(){
+    if(this.idx>0){ this.idx--; this.render(); }
+  },
+  pick(o,idx){
+    this.score[o._trait]+=o._trait_v; // v12 单特质 dose 0/1/2
+    this.sig+=String.fromCharCode(65+(idx|0));
+    this.idx++;
+    if(this.idx<this.round.length){ this.render(); }
+    else { this.finish(); }
+  },
+  finish(){
+    document.getElementById('bar').style.width='100%';
+    const t=TYPES.find(x=>x.cond(this.score)) || TYPES[TYPES.length-1];
+    document.getElementById('r-emoji').textContent=t.emoji;
+    document.getElementById('r-name').textContent=t.key;
+    document.getElementById('r-oneline').textContent=t.oneline;
+    document.getElementById('r-desc').textContent=t.desc;
+    document.getElementById('r-quote').textContent=t.quote;
+    const sig=this.sig||'X';
+    const pic=pickFigure(t.key, sig);
+    document.getElementById('r-figure').textContent=pic.person.figure;
+    document.getElementById('r-figureworld').textContent=pic.person.figureWorld;
+    document.getElementById('r-figurenote').textContent=pic.person.note;
+    document.getElementById('r-figurebio').textContent=pic.person.bio||'';
+    document.getElementById('r-code').textContent=pic.code;
+    document.getElementById('r-matchpct').textContent=pic.match+'%';
+    document.getElementById('r-matchcode').textContent=(this.mode==='deep'?'深度版':'轻量版')+' · 命格 No.'+pic.code;
+    document.getElementById('r-sig').textContent='作答轨迹 '+sig+'　·　同一轨迹必得同一人物，改一题即换命';
+    const dest=genDestiny(sig, t.key, this.score);
+    document.getElementById('r-destiny').textContent=dest.name;
+    document.getElementById('r-destiny-desc').textContent=dest.desc;
+    document.getElementById('r-lastword').textContent='命格不是写定的，是你此刻正在落的笔。';
+    const rar=computeRarity(this.score, this.mode, sig);
+    const badge=document.getElementById('r-rarity');
+    badge.textContent=rar.label;
+    badge.className='rarity-badge rarity-'+rar.tier;
+    document.getElementById('r-rarity-note').textContent=rar.note;
+    this.currentPerson={name:pic.person.figure, world:pic.person.figureWorld, pct:pic.match, code:pic.code, family:t.key, sig:sig, destiny:dest.name, rarity:rar.label};
+    const bars=document.getElementById('r-bars'); bars.innerHTML='';
+    const max=Math.max(3,...Object.values(this.score));
+    ['O','C','E','A','N'].forEach(k=>{
+      const pct=Math.round((Math.max(0,this.score[k]) / max)*100);
+      const row=document.createElement('div'); row.className='bar-row';
+      row.innerHTML=`<span>${OCEAN_LABEL[k]}</span><div class="bar-track"><i></i></div>`;
+      bars.appendChild(row);
+      setTimeout(()=>{ row.querySelector('i').style.width=Math.max(8,pct)+'%'; },50);
+    });
+    this.show('result');
+    // 微信适配：提示收藏；并确保收款码是 <img> 且可长按识别
+    this.toast('建议点右上角「···」收藏本页，防止退出后丢失报告');
+    try{ document.querySelectorAll('img').forEach(function(im){ im.style.pointerEvents='auto'; im.style.webkitTouchCallout='default'; }); }catch(e){}
+    this.currentType=t;
+    // 科学对表：每次进入结果页生成新 uid，重置同意与作答状态
+    this.uid = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+    this.mode = this.mode || 'lite';
+    Sci.reset();
+  },
+  restart(){ this.show('cover'); },
+  /* 复制三级兜底：clipboard API → execCommand → 手动复制弹窗，保证任何环境点了都有反应 */
+  copyText(txt){
+    return new Promise((resolve)=>{
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(txt).then(()=>resolve(true)).catch(()=>this._fallbackCopy(txt).then(resolve));
+        } else { this._fallbackCopy(txt).then(resolve); }
+      }catch(e){ this._fallbackCopy(txt).then(resolve); }
+    });
+  },
+  _fallbackCopy(txt){
+    try{
+      const ta=document.createElement('textarea');
+      ta.value=txt; ta.style.position='fixed'; ta.style.top='-1000px'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      let ok=false; try{ ok=document.execCommand('copy'); }catch(e){ ok=false; }
+      document.body.removeChild(ta);
+      return Promise.resolve(ok);
+    }catch(e){ return Promise.resolve(false); }
+  },
+  _manualCopy(txt, tip){
+    try{ window.prompt(tip||'自动复制不可用，请全选下方文案手动复制：', txt); }
+    catch(e){ this.toast('请长按本页手动复制'); }
+  },
+  copyCode(){
+    const codeEl=document.getElementById('r-code');
+    const code=codeEl?codeEl.textContent:'';
+    const dname=(this.currentPerson&&this.currentPerson.destiny)?this.currentPerson.destiny:'';
+    const pname=this.currentPerson?this.currentPerson.name:'';
+    const rar=(this.currentPerson&&this.currentPerson.rarity)?this.currentPerson.rarity:'';
+    const txt=`此刻之前没有我，此刻之后也可能没有——我在「末班之后」测出了${rar}命格「${dname}」，最像${pname}（对比码【${code}】）。你也来认领属于你的那一格 👉`;
+    this.copyText(txt).then((ok)=>{
+      if(ok) this.toast('对比码已复制，发给 TA 吧 📋');
+      else this._manualCopy(txt, '对比码：');
+    });
+  },
+  gotoCompare(){
+    this.show('compare');
+    const selA=document.getElementById('cmp-a'), selB=document.getElementById('cmp-b');
+    const opts=TYPES.map(t=>`<option value="${t.key}">${t.emoji} ${t.key}</option>`).join('');
+    selA.innerHTML=opts; selB.innerHTML=opts;
+    if(this.currentType){ selA.value=this.currentType.key; selB.value=TYPES[(TYPES.indexOf(this.currentType)+1)%TYPES.length].key; }
+    document.getElementById('cmp-result').classList.add('hidden');
+  },
+  backToResult(){ this.show('result'); },
+  doCompare(){
+    const aKey=document.getElementById('cmp-a').value;
+    const bKey=document.getElementById('cmp-b').value;
+    const A=TYPES.find(t=>t.key===aKey), B=TYPES.find(t=>t.key===bKey);
+    const rel=getRel(aKey,bKey) || {rel:"各自精彩", chemistry:"这两种类型之间没有现成的剧本——正因如此，你们的关系由自己书写。不同，未必不合；有时候，差异才是长久的燃料。", score:66};
+    document.getElementById('cmp-ea').textContent=A.emoji;
+    document.getElementById('cmp-na').textContent=A.key;
+    document.getElementById('cmp-eb').textContent=B.emoji;
+    document.getElementById('cmp-nb').textContent=B.key;
+    document.getElementById('cmp-rel').textContent=`「${rel.rel}」`;
+    document.getElementById('cmp-chem').textContent=rel.chemistry;
+    document.getElementById('cmp-scorenum').textContent=rel.score;
+    const bar=document.getElementById('cmp-scorebar'); bar.style.width='0%';
+    this.renderOceanCompare(A,B);
+    document.getElementById('cmp-result').classList.remove('hidden');
+    setTimeout(()=>{ bar.style.width=rel.score+'%'; },60);
+    this.lastCompare={A,B,rel};
+  },
+  renderOceanCompare(A,B){
+    const box=document.getElementById('cmp-ocean'); box.innerHTML='';
+    // 用类型关键词做个定性高低位（1高 0中 -1低）
+    const prof={
+      "探路者":{O:1,C:0,E:1,A:0,N:0},
+      "压舱石":{O:-1,C:1,E:-1,A:0,N:-1},
+      "黏合剂":{O:0,C:0,E:0,A:1,N:0},
+      "独行清醒者":{O:0,C:0,E:-1,A:0,N:-1},
+      "敏感雷达":{O:1,C:-1,E:-1,A:0,N:1},
+      "平衡者":{O:0,C:0,E:0,A:0,N:0},
+    };
+    const pa=prof[A.key]||{}, pb=prof[B.key]||{};
+    const pos=v=>({1:85,0:50,"-1":15}[v] ?? 50);
+    ['O','C','E','A','N'].forEach(k=>{
+      const r=document.createElement('div'); r.className='bar-row';
+      r.style.marginBottom='12px';
+      r.innerHTML=`<span style="width:52px">${OCEAN_LABEL[k]}</span>
+        <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
+          <div class="bar-track" style="height:6px"><i style="background:linear-gradient(90deg,#6ea8ff,#8f7bff)"></i></div>
+          <div class="bar-track" style="height:6px"><i style="background:linear-gradient(90deg,#ffd27a,#ff8fb1)"></i></div>
+        </div>`;
+      box.appendChild(r);
+      const bars=r.querySelectorAll('i');
+      setTimeout(()=>{ bars[0].style.width=pos(pa[k])+'%'; bars[1].style.width=pos(pb[k])+'%'; },80);
+    });
+    const lg=document.createElement('div'); lg.className='cmp-legend';
+    lg.innerHTML=`<span style="color:#8f7bff">■ 我：${A.key}</span><span style="color:#ff8fb1">■ TA：${B.key}</span>`;
+    box.appendChild(lg);
+  },
+  shareCompare(){
+    const {A,B,rel}=this.lastCompare||{};
+    if(!A){ this.toast('请先测出你们的关系再看文案'); return; }
+    const txt=`我和 TA 在「末班之后」测出来：我是「${A.emoji}${A.key}」，TA 是「${B.emoji}${B.key}」——\n历史原型关系：「${rel.rel}」，契合度 ${rel.score}。\n${rel.chemistry}\n来测测你和谁是什么关系 👉`;
+    this.copyText(txt).then((ok)=>{
+      if(ok) this.toast('关系文案已复制，晒出去吧 📋');
+      else this._manualCopy(txt, '自动复制不可用，请全选下方文案手动复制：');
+    });
+  },
+  share(){
+    const t=this.currentType;
+    if(!t){ this.toast('请先完成测试再看分享文案'); return; }
+    const txt=`我在「末班之后·72小时」测出来是「${t.emoji}${t.key}」——${t.oneline}。\n我的历史原型是${this.currentPerson?this.currentPerson.name:t.figure}（${this.currentPerson?this.currentPerson.world:t.figureWorld}），契合度${this.currentPerson?this.currentPerson.pct+'%':''}，命格 No.${this.currentPerson?this.currentPerson.code:''}。\n${t.quote}\n来测测你在末班车停摆的那晚会是哪种人 👉`;
+    this.copyText(txt).then((ok)=>{
+      if(ok) this.toast('分享文案已复制，去粘贴发给朋友吧 📋');
+      else this._manualCopy(txt, '自动复制不可用，请全选下方文案手动复制：');
+    });
+  },
+  toast(msg){ const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2202); }
+};
+
+/* ============================================================
+   科学对表计划（BFI-10） + 内部数据后台
+   BFI-10 公版量表 Rammstedt & John (2007)。全程匿名，不采集身份信息。
+   存储键：localStorage["mbz_records"] = [ {uid,mode,sig,scores,bfi,bfiRaw,ts,consent}, ... ]
+   ============================================================ */
+const Sci = {
+  // 每题：stem 题干后半句，trait 所属特质，key 正向/反向（reverse=true 反向计分）
+  BANK: [
+    {stem:"外向的、热情的",        trait:"E", reverse:false},
+    {stem:"挑剔的、爱争吵的",      trait:"A", reverse:true },
+    {stem:"可依赖的、自律的",      trait:"C", reverse:false},
+    {stem:"焦虑的、容易沮丧的",    trait:"N", reverse:false},
+    {stem:"乐于接受新体验的、心思复杂的", trait:"O", reverse:false},
+    {stem:"内敛的、安静的",        trait:"E", reverse:true },
+    {stem:"有同情心的、温暖的",    trait:"A", reverse:false},
+    {stem:"无序的、粗心的",        trait:"C", reverse:true },
+    {stem:"平静的、情绪稳定的",    trait:"N", reverse:true },
+    {stem:"守常规的、缺乏创意的",  trait:"O", reverse:true },
+  ],
+  order: [],   // 打乱后的题目顺序（存原索引）
+  answers: new Array(10).fill(0),
+  consent: false,
+
+  reset(){
+    this.consent=false;
+    this.answers=new Array(10).fill(0);
+    const cb=document.getElementById('sci-consent'); if(cb) cb.checked=false;
+    const btn=document.getElementById('sci-enter'); if(btn) btn.disabled=true;
+  },
+  toggleConsent(){
+    const cb=document.getElementById('sci-consent');
+    this.consent=!!cb.checked;
+    document.getElementById('sci-enter').disabled=!this.consent;
+  },
+  // Fisher-Yates 洗牌
+  _shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; },
+
+  enter(){
+    if(!this.consent) return;
+    // 打乱题序，且保证不按 OCEAN 顺序排列（连续两题不同特质即可）
+    this.order=this._shuffle(this.BANK.map((_,i)=>i));
+    if(this.BANK[this.order[0]].trait===this.BANK[this.order[1]].trait){
+      const swap=this.order.findIndex(i=>this.BANK[i].trait!==this.BANK[this.order[0]].trait);
+      if(swap>0){ [this.order[1],this.order[swap]]=[this.order[swap],this.order[1]]; }
+    }
+    this.answers=new Array(10).fill(0);
+    this.renderBfi();
+    Game.show('bfi');
+  },
+  renderBfi(){
+    const list=document.getElementById('bfi-list'); list.innerHTML='';
+    document.getElementById('bfi-prog').textContent='BFI-10 · 10 道题 · 每题 1（非常不同意）到 5（非常同意）';
+    this.order.forEach((bankIdx,pos)=>{
+      const q=this.BANK[bankIdx];
+      const qel=document.createElement('div'); qel.className='bfi-q';
+      qel.innerHTML=`<div class="bfi-stem">第 ${pos+1} 题　我觉得自己是一个 <b>${q.stem}</b> 的人</div>
+        <div class="bfi-scale" id="bfi-scale-${pos}">
+          ${[1,2,3,4,5].map(n=>`<button class="sc" onclick="Sci.pick(${pos},${n})">${n}</button>`).join('')}
+        </div>
+        <div class="bfi-legend"><span>非常不同意</span><span>非常同意</span></div>`;
+      list.appendChild(qel);
+    });
+  },
+  pick(pos,n){
+    this.answers[pos]=n;
+    const scale=document.getElementById('bfi-scale-'+pos);
+    scale.querySelectorAll('.sc').forEach((b,i)=>b.classList.toggle('on', i===n-1));
+  },
+  scored(){
+    // 每特质 2 题，反向题用 6 减原分，求和 → 2~10
+    const raw=this.order.map((bankIdx,pos)=>({q:this.BANK[bankIdx], val:this.answers[pos]}));
+    const bfi={O:0,C:0,E:0,A:0,N:0};
+    const bfiRaw=this.answers.slice();
+    raw.forEach(({q,val})=>{ bfi[q.trait]+= q.reverse ? (6-val) : val; });
+    return {bfi, bfiRaw};
+  },
+  _canStore(){ try{ localStorage.setItem('_t','1'); localStorage.removeItem('_t'); return true; }catch(e){ return false; } },
+  submit(){
+    if(this.answers.some(a=>!a)){ Game.toast('还有题没选哦，全部作答后才能提交'); return; }
+    const {bfi,bfiRaw}=this.scored();
+    const rec={
+      uid: Game.uid || ('x'+Date.now().toString(36)),
+      mode: Game.mode || 'lite',
+      sig: Game.sig || '',
+      scores: Object.assign({}, Game.score),
+      bfi: bfi,
+      bfiRaw: bfiRaw,
+      ts: Date.now(),
+      consent: true
+    };
+    let ok=true;
+    if(this._canStore()){
+      try{
+        const arr=JSON.parse(localStorage.getItem('mbz_records')||'[]');
+        arr.push(rec);
+        localStorage.setItem('mbz_records', JSON.stringify(arr));
+      }catch(e){ ok=false; }
+    } else { ok=false; }
+    Game.show('result');
+    if(ok){ Game.toast('感谢参与科学对表 🔬'); }
+    else { Game.toast('该浏览器无法存储研究数据，感谢你的作答'); }
+  },
+  skip(){ Game.show('result'); }
+};
+
+const Admin = {
+  PW: '72hours',
+  authenticated: false,
+  login(){
+    const pw=document.getElementById('adm-pw').value;
+    if(pw!==this.PW){ Game.toast('口令不对'); return; }
+    this.authenticated=true;
+    document.getElementById('adm-pw').value='';
+    this.render();
+  },
+  _records(){ try{ return JSON.parse(localStorage.getItem('mbz_records')||'[]'); }catch(e){ return []; } },
+  render(){
+    if(!this.authenticated){
+      document.getElementById('adm-login').classList.remove('hidden');
+      document.getElementById('adm-panel').classList.add('hidden');
+      return;
+    }
+    document.getElementById('adm-login').classList.add('hidden');
+    document.getElementById('adm-panel').classList.remove('hidden');
+    const recs=this._records().slice().reverse(); // 新记录在前
+    document.getElementById('adm-count').textContent='总样本数 N = '+recs.length+'（同一浏览器可多条，用于重测一致性分析）';
+    if(recs.length===0){
+      document.getElementById('adm-table').innerHTML='<div class="adm-empty">还没有数据。等有人完成科学对表后就会出现在这里。</div>';
+      document.getElementById('adm-corr').innerHTML='';
+      return;
+    }
+    const fmt=(o)=>['O','C','E','A','N'].map(k=>k+':'+(o[k]!==undefined?o[k]:'-')).join(' ');
+    const rows=recs.map(r=>{
+      const d=new Date(r.ts);
+      const tstr=`${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+      return `<tr>
+        <td>${(r.uid||'').slice(0,8)}</td>
+        <td>${r.mode==='deep'?'深度':'轻量'}</td>
+        <td>${r.sig||''}</td>
+        <td>${fmt(r.scores||{})}</td>
+        <td>${fmt(r.bfi||{})}</td>
+        <td>${tstr}</td>
+      </tr>`;
+    }).join('');
+    document.getElementById('adm-table').innerHTML=
+      `<table><thead><tr><th>uid</th><th>版本</th><th>轨迹</th><th>本测五维</th><th>BFI-10五维</th><th>时间</th></tr></thead><tbody>${rows}</tbody></table>`;
+    document.getElementById('adm-corr').innerHTML='';
+  },
+  exportCSV(){
+    const recs=this._records();
+    if(recs.length===0){ Game.toast('暂无数据可导出'); return; }
+    const head=['uid','mode','sig','ts','date',
+      's_O','s_C','s_E','s_A','s_N','bfi_O','bfi_C','bfi_E','bfi_A','bfi_N',
+      'raw1','raw2','raw3','raw4','raw5','raw6','raw7','raw8','raw9','raw10'];
+    const lines=[head.join(',')];
+    recs.forEach(r=>{
+      const s=r.scores||{}, b=r.bfi||{}, raw=r.bfiRaw||[];
+      const row=[
+        r.uid||'', r.mode||'', r.sig||'', r.ts||'', r.ts?new Date(r.ts).toISOString():'',
+        s.O,s.C,s.E,s.A,s.N, b.O,b.C,b.E,b.A,b.N,
+        raw[0],raw[1],raw[2],raw[3],raw[4],raw[5],raw[6],raw[7],raw[8],raw[9]
+      ].map(v=>`"${String(v===undefined||v===null?'':v).replace(/"/g,'""')}"`);
+      lines.push(row.join(','));
+    });
+    const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='mbz_data.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    Game.toast('已导出 '+recs.length+' 条记录');
+  },
+  _pearson(xs,ys){
+    const n=xs.length; if(n<2) return NaN;
+    let mx=0,my=0; for(let i=0;i<n;i++){ mx+=xs[i]; my+=ys[i]; } mx/=n; my/=n;
+    let num=0,dx=0,dy=0;
+    for(let i=0;i<n;i++){ const a=xs[i]-mx, b=ys[i]-my; num+=a*b; dx+=a*a; dy+=b*b; }
+    if(dx===0||dy===0) return NaN;
+    return num/Math.sqrt(dx*dy);
+  },
+  corr(){
+    const recs=this._records().filter(r=>r.scores&&r.bfi);
+    if(recs.length<2){
+      document.getElementById('adm-corr').innerHTML='<div class="adm-empty">至少需要 2 条完整记录才能计算相关（当前 '+recs.length+' 条）。</div>';
+      return;
+    }
+    const LBL={O:'开放性',C:'尽责性',E:'外向性',A:'宜人性',N:'神经质'};
+    let html='<table class="adm-corr"><thead><tr><th>特质</th><th>Pearson r</th><th>n</th><th>解读</th></tr></thead><tbody>';
+    ['O','C','E','A','N'].forEach(k=>{
+      const xs=[], ys=[];
+      recs.forEach(r=>{
+        const x=r.scores[k], y=r.bfi[k];
+        if(x!==undefined && y!==undefined){ xs.push(Number(x)); ys.push(Number(y)); }
+      });
+      let cell, note;
+      if(xs.length<2){ cell='<td class="low">样本不足</td>'; note='-'; html+=`<tr><td>${LBL[k]}（${k}）</td>${cell}<td>${xs.length}</td><td>${note}</td></tr>`; return; }
+      const r=this._pearson(xs,ys);
+      const cls = r>=0.5?'good' : (r>=0.2?'mid':'low');
+      note = r>=0.5?'较强正相关，题目测到了' : (r>=0.2?'弱正相关，方向对但需更多样本' : (r>=-0.2?'几乎无关' : '负相关，需检查题眼'));
+      html+=`<tr><td>${LBL[k]}（${k}）</td><td class="${cls}">${r.toFixed(2)}</td><td>${xs.length}</td><td>${note}</td></tr>`;
+    });
+    html+='</tbody></table><div class="adm-note">r = Σ(x-x̄)(y-ȳ) / √[Σ(x-x̄)²Σ(y-ȳ)²]，本测五维分数 vs BFI-10 五维分数，逐特质配对计算。</div>';
+    document.getElementById('adm-corr').innerHTML=html;
+  },
+  clearAll(){
+    if(!confirm('确认清空全部 '+this._records().length+' 条研究数据？此操作不可撤销。')) return;
+    try{ localStorage.removeItem('mbz_records'); }catch(e){}
+    Game.toast('已清空全部研究数据');
+    this.render();
+  }
+};
+
+Game.init();
+
+/* ============ 微信生态适配补丁（原功能一律不动） ============ */
+/* 6) 100vh 动态计算：微信顶部/底部栏会压缩可视高度 */
+(function(){
+  function setVh(){
+    var h = (window.visualViewport && window.visualViewport.height) ? window.visualViewport.height : window.innerHeight;
+    document.documentElement.style.setProperty('--vh', (h/100)+'px');
+  }
+  setVh();
+  window.addEventListener('resize', setVh);
+  window.addEventListener('orientationchange', function(){ setTimeout(setVh, 200); });
+  if(window.visualViewport){ window.visualViewport.addEventListener('resize', setVh); }
+})();
+
+/* 5) 返回键保护：进入答题后每题 pushState，返回键先回上一题 */
+(function(){
+  var QUIZ_DEPTH = 0;      // 答题期间压入历史的层数
+  var handling = false;
+  function inQuiz(){ return !!(Game && Game.el && Game.el.quiz && !Game.el.quiz.classList.contains('hidden')); }
+  window.addEventListener('popstate', function(){
+    if(handling) return;
+    if(inQuiz() && QUIZ_DEPTH > 0){
+      handling = true; QUIZ_DEPTH--;
+      try{ if(typeof Game.prev === 'function') Game.prev(); }catch(e){}
+      setTimeout(function(){ handling=false; }, 0);
+    }
+  });
+  var _start = Game.start.bind(Game);
+  Game.start = function(mode){
+    _start(mode);
+    QUIZ_DEPTH = 0;
+    try{ history.pushState({mz:'quiz-enter'}, ''); QUIZ_DEPTH++; }catch(e){}
+    try{ history.pushState({mz:'q'+Game.idx}, ''); QUIZ_DEPTH++; }catch(e){}
+  };
+  var _render = Game.render.bind(Game);
+  Game.render = function(){
+    _render();
+    if(inQuiz()){ try{ history.pushState({mz:'q'+Game.idx}, ''); QUIZ_DEPTH++; }catch(e){} }
+  };
+  var _finish = Game.finish.bind(Game);
+  Game.finish = function(){
+    QUIZ_DEPTH = 0;   // 进入结果页后不再拦截返回键
+    _finish();
+  };
+})();
+
+/* 4) 海报生成：原生 canvas 手动绘制，不依赖 html2canvas */
+Object.assign(Game, {
+  _px: function(n){ return Math.round(n * 1080 / 1080); },
+  roundRect: function(ctx,x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+    ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+    ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+  },
+  wrapText: function(ctx,text,x,y,maxW,lh,maxLines){
+    var line='', rows=0;
+    for(var i=0;i<text.length;i++){
+      var test=line+text[i];
+      if(ctx.measureText(test).width>maxW && line){
+        ctx.fillText(line,x,y); line=text[i]; y+=lh; rows++;
+        if(maxLines && rows>=maxLines){ return y; }
+      } else { line=test; }
+    }
+    if(line) ctx.fillText(line,x,y);
+    return y+lh;
+  },
+  makePoster: function(){
+    try{
+      var P=this.currentPerson, T=this.currentType;
+      if(!P || !T){ this.toast('请先完成测试再生成海报'); return; }
+      var cv=document.getElementById('posterCv'), ctx=cv.getContext('2d');
+      var W=1080, H=1440, F='"PingFang SC","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif';
+      var gold='#ffd27a', pink='#ff8fb1', sub='#9aa4b2', card='#171c26';
+      // 底色
+      var g=ctx.createRadialGradient(W/2,120,0,W/2,120,900);
+      g.addColorStop(0,'#1a2230'); g.addColorStop(1,'#0e1116');
+      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+      // 顶部测试名
+      ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillStyle=gold; ctx.font='600 34px '+F;
+      ctx.fillText('末班之后 · 72 小时', W/2, 96);
+      ctx.fillStyle=sub; ctx.font='24px '+F;
+      ctx.fillText('城市停摆的那个晚上，你是最后一个醒着的人', W/2, 138);
+      // 主卡
+      ctx.fillStyle=card; this.roundRect(ctx,60,180,W-120,760,28); ctx.fill();
+      ctx.strokeStyle='rgba(255,210,122,.35)'; ctx.lineWidth=2; ctx.stroke();
+      // 命格名
+      ctx.fillStyle=sub; ctx.font='24px '+F; ctx.fillText('✦ 我的专属命格', W/2, 250);
+      ctx.fillStyle=gold; ctx.font='800 76px '+F;
+      ctx.fillText(P.destiny||'', W/2, 350);
+      // 稀有度徽章
+      var tier=(P.rarity||'N').replace(/[^NRS]/g,'')||'N';
+      var colors={N:'#9a9a9a',R:'#6ea8ff',SR:'#c482ff',SSR:'#ffbe6a'};
+      var c=colors[tier]||'#9a9a9a';
+      var label=(tier==='SSR'?'SSR · 极罕':tier==='SR'?'SR · 稀有':tier==='R'?'R · 少见':'N · 常见');
+      ctx.font='700 26px '+F; var bw=ctx.measureText(label).width+44;
+      this.roundRect(ctx,W/2-bw/2,392,bw,46,23);
+      ctx.fillStyle='rgba(255,255,255,.06)'; ctx.fill();
+      ctx.strokeStyle=c; ctx.lineWidth=2; ctx.stroke();
+      ctx.fillStyle=c; ctx.fillText(label, W/2, 423);
+      // 历史原型
+      ctx.fillStyle=sub; ctx.font='24px '+F; ctx.fillText('我最像 TA', W/2, 520);
+      ctx.fillStyle='#e8ecf2'; ctx.font='700 52px '+F;
+      ctx.fillText((T.emoji?T.emoji+' ':'')+(P.name||''), W/2, 592);
+      ctx.fillStyle=pink; ctx.font='26px '+F;
+      ctx.fillText('契合度 '+(P.pct||'--')+'%  ·  '+(P.world||''), W/2, 634);
+      // 金句
+      var q=(T.quote||'').replace(/^「|」$/g,'');
+      ctx.strokeStyle='rgba(255,143,177,.6)'; ctx.lineWidth=4;
+      ctx.beginPath(); ctx.moveTo(120,700); ctx.lineTo(120,780); ctx.stroke();
+      ctx.fillStyle='#e8ecf2'; ctx.font='italic 30px '+F;
+      this.wrapText(ctx,'「'+q+'」',150,736,W-270,42,3);
+      // 底部二维码卡
+      ctx.fillStyle=card; this.roundRect(ctx,60,980,W-120,360,24); ctx.fill();
+      var self=this;
+      var drawBottom=function(){
+        ctx.fillStyle=gold; ctx.font='600 28px '+F;
+        ctx.fillText('扫码测测你会是谁', W/2, 1200);
+        ctx.fillStyle=sub; ctx.font='20px '+F;
+        ctx.fillText('叙事式人格小实验 · 娱乐向，非临床诊断', W/2, 1240);
+        try{
+          var out=cv.toDataURL('image/png');
+          var img=document.getElementById('posterImg');
+          img.src=out;
+          document.getElementById('posterBox').classList.remove('hidden');
+          self.toast('海报已生成，长按保存 📲');
+        }catch(e){ self.toast('当前环境不支持生成海报，请截图保存'); }
+      };
+      var qr=document.getElementById('qrcodeImg');
+      if(qr && qr.complete && qr.naturalWidth>0){
+        try{ ctx.drawImage(qr, W/2-90, 1020, 180, 180); }catch(e){}
+        drawBottom();
+      } else {
+        // 二维码缺失：画占位框，仍出图
+        this.roundRect(ctx,W/2-90,1020,180,180,12);
+        ctx.fillStyle='rgba(255,255,255,.05)'; ctx.fill();
+        ctx.strokeStyle='rgba(255,210,122,.4)'; ctx.lineWidth=2; ctx.stroke();
+        ctx.fillStyle=sub; ctx.font='22px '+F; ctx.fillText('二维码', W/2, 1120);
+        drawBottom();
+      }
+    }catch(e){ this.toast('海报生成失败，请截图当前页面'); }
+  },
+  downloadPoster: function(){
+    var img=document.getElementById('posterImg');
+    if(!img || !img.src){ this.toast('请先生成海报'); return; }
+    try{
+      var a=document.createElement('a'); a.href=img.src; a.download='末班之后_命格海报.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }catch(e){ this.toast('请长按海报图片保存'); }
+  }
+});
+</script>
+</body>
+</html>
